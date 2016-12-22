@@ -1,0 +1,16 @@
+﻿using CustomFrame.Web.Filters;
+using System.Web;
+using System.Web.Mvc;
+
+namespace CustomFrame.Web
+{
+    public class FilterConfig
+    {
+        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        {
+            filters.Add(new HandleErrorAttribute());
+            //添加自定义全局异常
+            //filters.Add(new AjaxExceptionAttribute());
+        }
+    }
+}
