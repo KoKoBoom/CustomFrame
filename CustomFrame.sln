@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Web", "1.Web", "{8B4F5F18-EAAE-4E73-92AA-48815BA6B376}"
 EndProject
@@ -32,6 +32,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomFrame.Common", "CustomFrame.Common\CustomFrame.Common.csproj", "{CAA687B6-B794-4EFE-9259-C2F90C9CA057}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomFrame.Logging", "CustomFrame.Logging\CustomFrame.Logging.csproj", "{876861EA-A401-463C-859D-41085B582E21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "8.WinForm", "8.WinForm", "{C5DFAE99-40FC-4DB7-91D3-CBC0526CC8EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomFrame.WindowsForms", "CustomeFrame.WindowsForms\CustomFrame.WindowsForms.csproj", "{8455263E-AB03-4C0C-B588-18CE3A448D49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +75,10 @@ Global
 		{876861EA-A401-463C-859D-41085B582E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{876861EA-A401-463C-859D-41085B582E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{876861EA-A401-463C-859D-41085B582E21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8455263E-AB03-4C0C-B588-18CE3A448D49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8455263E-AB03-4C0C-B588-18CE3A448D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8455263E-AB03-4C0C-B588-18CE3A448D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8455263E-AB03-4C0C-B588-18CE3A448D49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,5 +92,6 @@ Global
 		{473304E2-6A68-4942-B4A6-DFCB477C7E78} = {8A212048-3DF4-40CB-BCBE-F0D24BB5980E}
 		{CAA687B6-B794-4EFE-9259-C2F90C9CA057} = {799E6C01-5AAA-4374-BED4-9D02383B8C87}
 		{876861EA-A401-463C-859D-41085B582E21} = {799E6C01-5AAA-4374-BED4-9D02383B8C87}
+		{8455263E-AB03-4C0C-B588-18CE3A448D49} = {C5DFAE99-40FC-4DB7-91D3-CBC0526CC8EF}
 	EndGlobalSection
 EndGlobal
