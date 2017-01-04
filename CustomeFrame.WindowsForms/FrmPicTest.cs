@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using CustomFrame.Common;
+using static CustomFrame.Common.FileExtend;
 
 namespace CustomFrame.WindowsForms
 {
@@ -20,13 +17,14 @@ namespace CustomFrame.WindowsForms
 
         private void pictureEdit1_Click(object sender, EventArgs e)
         {
+            var pic = sender as DevExpress.XtraEditors.PictureEdit;
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "图片|*.jpg;*.jpeg;*.png;*.gif";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     NewPath = SaveImage(ofd.FileName);
-                    pictureEdit1.Image = CustomFrame.Common.Utils.ReadImageFileFromFileStream(NewPath);
+                    pic.Image = GetImageFromReadAllBytes(NewPath);
                 }
             }
         }
@@ -35,7 +33,7 @@ namespace CustomFrame.WindowsForms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            File.Delete(NewPath);
+            DeleteFile(NewPath);
             pictureEdit1.Image = null;
             NewPath = string.Empty;
         }
@@ -43,7 +41,7 @@ namespace CustomFrame.WindowsForms
 
         public string SaveImage(string path)
         {
-            string newPath = Application.StartupPath + DateTime.Now.ToString("yyyyMMddHHmmss") + System.IO.Path.GetExtension(path);
+            string newPath = Application.StartupPath + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyyMMddHHmmss") + System.IO.Path.GetExtension(path);
             using (Bitmap bitmap = new Bitmap(path))
             {
                 bitmap.Save(newPath);

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CustomeFrame.WindowsForms.Properties
+namespace CustomFrame.WindowsForms.Properties
 {
 
 

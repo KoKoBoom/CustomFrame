@@ -55,6 +55,7 @@
     <Compile Include="DataCache.cs" />
     <Compile Include="Extensions\Ordinary\Extensions.cs" />
     <Compile Include="Extensions\Linq\WhereIfExtension.cs" />
+    <Compile Include="FileExtend.cs" />
     <Compile Include="HttpProc.cs" />
     <Compile Include="MailSender.cs" />
     <Compile Include="ProcessExtensions.cs" />
