@@ -69,52 +69,13 @@ namespace CustomFrame.Common
 
         #endregion
 
-
-
-
+        #region 将 o_str 按照 sepeater 分割
         /// <summary>
-        /// 转全角的函数(SBC case)
+        /// 将 o_str 按照 sepeater 分割
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="o_str">字符串</param>
+        /// <param name="sepeater">分隔符</param>
         /// <returns></returns>
-        public static string ToSBC(string input)
-        {
-            //半角转全角：
-            char[] c = input.ToCharArray();
-            for (int i = 0; i < c.Length; i++)
-            {
-                if (c[i] == 32)
-                {
-                    c[i] = (char)12288;
-                    continue;
-                }
-                if (c[i] < 127)
-                    c[i] = (char)(c[i] + 65248);
-            }
-            return new string(c);
-        }
-
-        /// <summary>
-        ///  转半角的函数(SBC case)
-        /// </summary>
-        /// <param name="input">输入</param>
-        /// <returns></returns>
-        public static string ToDBC(string input)
-        {
-            char[] c = input.ToCharArray();
-            for (int i = 0; i < c.Length; i++)
-            {
-                if (c[i] == 12288)
-                {
-                    c[i] = (char)32;
-                    continue;
-                }
-                if (c[i] > 65280 && c[i] < 65375)
-                    c[i] = (char)(c[i] - 65248);
-            }
-            return new string(c);
-        }
-
         public static List<string> GetSubStringList(string o_str, char sepeater)
         {
             List<string> list = new List<string>();
@@ -128,7 +89,7 @@ namespace CustomFrame.Common
             }
             return list;
         }
-
+        #endregion
 
         #region 将字符串样式转换为纯字符串
         public static string GetCleanStyle(string StrList, string SplitString)

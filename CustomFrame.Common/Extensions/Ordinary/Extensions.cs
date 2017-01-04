@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomFrame.Common
 {
@@ -195,7 +194,7 @@ namespace CustomFrame.Common
         }
         #endregion
 
-        #region IsNullOrEmpty IsNullOrWhiteSpace
+        #region IsNullOrEmpty IsNullOrWhiteSpace IsNotNullAndEmpty IsNotNullAndWhiteSpace
         public static bool IsNullOrEmpty(this string s)
         {
             return string.IsNullOrEmpty(s);
@@ -204,6 +203,16 @@ namespace CustomFrame.Common
         public static bool IsNullOrWhiteSpace(this string s)
         {
             return string.IsNullOrWhiteSpace(s);
+        }
+
+        public static bool IsNotNullAndEmpty(this string s)
+        {
+            return !string.IsNullOrEmpty(s);
+        }
+
+        public static bool IsNotNullAndWhiteSpace(this string s)
+        {
+            return !string.IsNullOrWhiteSpace(s);
         }
         #endregion
 
@@ -214,7 +223,7 @@ namespace CustomFrame.Common
         /// </summary>
         public static string ToJson(this object obj)
         {
-            return LitJson.JsonMapper.ToJson(obj);
+            return LitJson2.JsonMapper.ToJson(obj);
         }
         #endregion
 
@@ -224,7 +233,7 @@ namespace CustomFrame.Common
         /// </summary>
         public static T ToObject<T>(this string json)
         {
-            return LitJson.JsonMapper.ToObject<T>(json);
+            return LitJson2.JsonMapper.ToObject<T>(json);
         }
         #endregion
 
