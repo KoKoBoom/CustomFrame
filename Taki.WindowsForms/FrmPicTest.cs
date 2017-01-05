@@ -17,6 +17,9 @@ namespace Taki.WindowsForms
 
         private void pictureEdit1_Click(object sender, EventArgs e)
         {
+
+            Taki.Logging.LoggerFactory.CreateLog().Debug("11111111", "FrmPicTest.pictureEdit1_Click");
+
             var pic = sender as DevExpress.XtraEditors.PictureEdit;
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
