@@ -223,6 +223,8 @@ namespace CustomFrame.Common
         /// </summary>
         public static string ToJson(this object obj)
         {
+            if (obj == null)
+                return default(string);
             return LitJson2.JsonMapper.ToJson(obj);
         }
         #endregion
@@ -233,6 +235,8 @@ namespace CustomFrame.Common
         /// </summary>
         public static T ToObject<T>(this string json)
         {
+            if (string.IsNullOrWhiteSpace(json))
+                return default(T);
             return LitJson2.JsonMapper.ToObject<T>(json);
         }
         #endregion

@@ -38,5 +38,28 @@ namespace CustomFrame.Common
         #endregion
 
         #endregion
+
+        #region 获取本应用启动程序的上一级物理路径 （即\Debug\*.exe 的上一级目录）
+        /// <summary>
+        /// 获取本应用启动程序的上一级物理路径 （即\Debug\*.exe 的上一级目录）
+        /// </summary>
+        /// <returns></returns>
+        public static string GetParentDirectory()
+        {
+            return Directory.GetParent(AppDomain
+                    .CurrentDomain
+                    .SetupInformation
+                    .ApplicationBase.TrimEnd(Path.DirectorySeparatorChar)).FullName;
+        }
+
+        /// <summary>
+        /// 获取上一级物理路径
+        /// </summary>
+        /// <returns></returns>
+        public static string GetParentDirectory(string pathOrDirectory)
+        {
+            return Directory.GetParent(pathOrDirectory.TrimEnd(Path.DirectorySeparatorChar)).FullName;
+        }
+        #endregion
     }
 }

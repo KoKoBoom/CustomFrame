@@ -43,6 +43,36 @@ namespace CustomFrame.Common
             return RandomCode;
         }
 
+        /// <summary>
+        /// 从字符串里随机得到，规定个数的字符串.
+        /// </summary>
+        /// <param name="allChar"></param>
+        /// <param name="CodeCount"></param>
+        /// <returns></returns>
+        public static string GetRandomCode(string[] allCharArray, int CodeCount)
+        {
+            string RandomCode = "";
+            int temp = -1;
+            Random rand = new Random();
+            for (int i = 0; i < CodeCount; i++)
+            {
+                if (temp != -1)
+                {
+                    rand = new Random(temp * i * ((int)DateTime.Now.Ticks));
+                }
+
+                int t = rand.Next(allCharArray.Length - 1);
+
+                while (temp == t)
+                {
+                    t = rand.Next(allCharArray.Length - 1);
+                }
+
+                temp = t;
+                RandomCode += allCharArray[t];
+            }
+            return RandomCode;
+        }
         #endregion
 
 

@@ -24,9 +24,15 @@ namespace CustomFrame.Logging
             }
         }
 
+
         public void DefaultFactory()
         {
-            SetConfig(System.AppDomain.CurrentDomain.BaseDirectory + "/bin/Extend/log4net/log4net.config");
+            var path = System.AppDomain.CurrentDomain.BaseDirectory + "\\bin\\Extend\\log4net\\log4net.config"; //Web网站
+            if (!System.IO.File.Exists(path))
+            {
+                path = System.Windows.Forms.Application.StartupPath + "\\Extend\\log4net\\log4net.config";//WinForm程序
+            }
+            SetConfig(path);
             Logging.LoggerFactory.SetCurrent(new Logging.Logger4Factory());
         }
     }

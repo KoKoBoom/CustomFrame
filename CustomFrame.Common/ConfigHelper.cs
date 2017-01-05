@@ -106,5 +106,27 @@ namespace CustomFrame.Common
 
             return result;
         }
+
+        #region 设置App.config中AppSettings节点的值
+        /// <summary>
+        /// 设置App.config中AppSettings节点的值
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public static void SetConfigAppSettings(string key, string value)
+        {
+            string path = System.Windows.Forms.Application.ExecutablePath;
+            Configuration config = ConfigurationManager.OpenExeConfiguration(path);
+            config.AppSettings.Settings.Remove(key);    //如果不先移除，value 会追加（类似Append）
+            config.AppSettings.Settings.Add(key, value);
+            // 保存对配置文件所作的更改
+            config.Save(ConfigurationSaveMode.Modified);
+            // 强制重新载入配置文件的ConnectionStrings配置节
+            ConfigurationManager.RefreshSection("appSettings");
+            //更新缓存
+            string CacheKey = "AppSettings-" + key;
+            DataCache.SetCache(CacheKey, value, DateTime.Now.AddMinutes(180), TimeSpan.Zero);
+        }
+        #endregion
     }
 }
