@@ -7,8 +7,8 @@
     <ProjectGuid>{D42B3AC0-FDD2-4BCF-9BB1-B2F132EEBA8E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomFrame.IDAL</RootNamespace>
-    <AssemblyName>CustomFrame.IDAL</AssemblyName>
+    <RootNamespace>Taki.IDAL</RootNamespace>
+    <AssemblyName>Taki.IDAL</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

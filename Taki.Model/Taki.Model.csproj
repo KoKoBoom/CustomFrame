@@ -7,8 +7,8 @@
     <ProjectGuid>{473304E2-6A68-4942-B4A6-DFCB477C7E78}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomFrame.Model</RootNamespace>
-    <AssemblyName>CustomFrame.Model</AssemblyName>
+    <RootNamespace>Taki.Model</RootNamespace>
+    <AssemblyName>Taki.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,26 +46,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomFrame.Context.cs">
+    <Compile Include="Taki.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CustomFrame.Context.tt</DependentUpon>
+      <DependentUpon>Taki.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="CustomFrame.cs">
+    <Compile Include="Taki.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CustomFrame.tt</DependentUpon>
+      <DependentUpon>Taki.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CustomFrame.Context.tt">
+    <Content Include="Taki.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CustomFrame.Context.cs</LastGenOutput>
+      <LastGenOutput>Taki.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="CustomFrame.tt">
+    <Content Include="Taki.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CustomFrame.cs</LastGenOutput>
+      <LastGenOutput>Taki.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

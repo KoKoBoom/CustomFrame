@@ -7,8 +7,8 @@
     <ProjectGuid>{876861EA-A401-463C-859D-41085B582E21}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomFrame.Logging</RootNamespace>
-    <AssemblyName>CustomFrame.Logging</AssemblyName>
+    <RootNamespace>Taki.Logging</RootNamespace>
+    <AssemblyName>Taki.Logging</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

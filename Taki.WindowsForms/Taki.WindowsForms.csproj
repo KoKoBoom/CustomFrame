@@ -7,8 +7,8 @@
     <ProjectGuid>{8455263E-AB03-4C0C-B588-18CE3A448D49}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomeFrame.WindowsForms</RootNamespace>
-    <AssemblyName>CustomeFrame.WindowsForms</AssemblyName>
+    <RootNamespace>Taki.WindowsForms</RootNamespace>
+    <AssemblyName>Taki.WindowsForms</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

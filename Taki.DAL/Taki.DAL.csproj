@@ -7,8 +7,8 @@
     <ProjectGuid>{29DAC7A8-9B07-49A4-8C58-F1E5218619F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomFrame.DAL</RootNamespace>
-    <AssemblyName>CustomFrame.DAL</AssemblyName>
+    <RootNamespace>Taki.DAL</RootNamespace>
+    <AssemblyName>Taki.DAL</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

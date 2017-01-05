@@ -5,16 +5,12 @@ using System.Text;
 
 namespace Taki.Common
 {
-    public enum ReturnDefault
-    {
-        Yes
-    }
-
-
     /// <summary>
     /// 扩展方法
     ///     其他扩展可参考 
     ///     NuGet的PGK.Extensions
+    ///     
+    /// Newtonsoft 高级用法 http://www.cnblogs.com/yanweidie/p/4605212.html
     /// </summary>
     public static class Extensions
     {
@@ -246,28 +242,48 @@ namespace Taki.Common
         }
         #endregion
 
-        #region 序列化
-        //object extensions
+        #region 序列化 Newtonsoft 高级用法：http://www.cnblogs.com/yanweidie/p/4605212.html
         /// <summary>
         /// 将 obj 序列化为 JSON 字符串
         /// </summary>
-        public static string ToJson(this object obj)
+        /// <param name="obj"></param>
+        /// <param name="isReturnDefaultValue">是否返回默认值 ==》 【true: 返回默认值(null)】 【false: 抛出异常】<</param>
+        /// <returns></returns>
+        public static string ToJson(this object obj, bool isReturnDefaultValue = true)
         {
-            if (obj == null)
-                return default(string);
-            return LitJson2.JsonMapper.ToJson(obj);
+            try
+            {
+                return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            }
+            catch (Exception ex)
+            {
+                if (!isReturnDefaultValue)
+                    throw new Exception("序列化 Json 失败", ex);
+            }
+            return null;
         }
         #endregion
 
         #region 反序列化
         /// <summary>
-        /// 将 Json 反序列为 .Net 对象
+        /// 将 Json 反序列为 T
         /// </summary>
-        public static T ToObject<T>(this string json)
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        /// <param name="isReturnDefaultValue">是否返回默认值 ==》 【true: 返回默认值 一般情况为 null】 【false: 抛出异常】</param>
+        /// <returns></returns>
+        public static T ToObject<T>(this string json, bool isReturnDefaultValue = true)
         {
-            if (string.IsNullOrWhiteSpace(json))
-                return default(T);
-            return LitJson2.JsonMapper.ToObject<T>(json);
+            try
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (Exception ex)
+            {
+                if (!isReturnDefaultValue)
+                    throw new Exception("反序列化 Json 失败", ex);
+            }
+            return default(T);
         }
         #endregion
 
@@ -482,8 +498,6 @@ namespace Taki.Common
             return default(T);
         }
         #endregion
-
-
 
     }
 }

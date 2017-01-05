@@ -7,8 +7,8 @@
     <ProjectGuid>{73804598-76B6-426D-A67F-B0705D968236}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomFrame.BLL</RootNamespace>
-    <AssemblyName>CustomFrame.BLL</AssemblyName>
+    <RootNamespace>Taki.BLL</RootNamespace>
+    <AssemblyName>Taki.BLL</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -7,8 +7,8 @@
     <ProjectGuid>{2A412055-B371-45D8-8780-79E2B965908F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomFrame.IBLL</RootNamespace>
-    <AssemblyName>CustomFrame.IBLL</AssemblyName>
+    <RootNamespace>Taki.IBLL</RootNamespace>
+    <AssemblyName>Taki.IBLL</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
