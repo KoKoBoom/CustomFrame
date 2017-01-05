@@ -24,7 +24,8 @@ namespace CustomFrame.WindowsForms
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     NewPath = SaveImage(ofd.FileName);
-                    pic.Image = GetImageFromReadAllBytes(NewPath);
+                    //pic.Image = GetImageFromReadAllBytes(NewPath);
+                    pic.Image = GetImage(NewPath);
                 }
             }
         }

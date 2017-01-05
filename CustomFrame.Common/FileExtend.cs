@@ -15,6 +15,7 @@ namespace CustomFrame.Common
          * 不过GC回收机制对 MemoryStream 这种托管代码管理的还行，释不释放都还OK 
          */
 
+
         #region ReadAllBytes 方式读取图片 （推荐。可以读取任何图片文件 代码量少）
         /// <summary>
         /// ReadAllBytes 方式读取图片 （推荐。可以读取任何图片文件）
@@ -67,6 +68,22 @@ namespace CustomFrame.Common
                 }
             }
             return null;
+        }
+        #endregion
+
+        #region 可以读取任何图片，但是 gif 不能动
+        /// <summary>
+        /// 可以读取任何图片，但是 gif 不能动
+        /// </summary>
+        /// <param name="fileAbsolutePath"></param>
+        /// <returns></returns>
+        public static Image GetImage(string fileAbsolutePath)
+        {
+            using (Image img = System.Drawing.Image.FromFile(fileAbsolutePath))
+            {
+                System.Drawing.Image image = new System.Drawing.Bitmap(img);
+                return image;
+            }
         }
         #endregion
 

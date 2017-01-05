@@ -5,6 +5,12 @@ using System.Text;
 
 namespace CustomFrame.Common
 {
+    public enum ReturnDefault
+    {
+        Yes
+    }
+
+
     /// <summary>
     /// 扩展方法
     ///     其他扩展可参考 
@@ -12,15 +18,16 @@ namespace CustomFrame.Common
     /// </summary>
     public static class Extensions
     {
-        #region 类型转换
+        #region 通用类型转换
+
         /// <summary>
         /// 类型转换
         /// </summary>
         /// <typeparam name="T">转换目标类型</typeparam>
         /// <param name="value">需要转换的值</param>
-        /// <param name="returnDefault">true:如果异常则返回默认的（T）的值，false:抛出异常</param>
+        /// <param name="isReturnDefault">true:如果异常则返回默认的（T）的值，false:抛出异常</param>
         /// <returns>T</returns>
-        public static T To<T>(this object value, bool returnDefault = true)
+        public static T To<T>(this object value, bool isReturnDefault = true)
         {
             var result = default(T);
             try
@@ -29,20 +36,43 @@ namespace CustomFrame.Common
                 {
                     result = (T)Convert.ChangeType(value, typeof(T));
                 }
-                else if (!returnDefault)
+                else if (!isReturnDefault)
                 {
-                    throw new ArgumentNullException();
+                    throw new FormatException();
                 }
             }
             catch (Exception e)
             {
-                if (!returnDefault)
+                if (!isReturnDefault)
                 {
                     throw e;//$"无法将 '{ value }' 转换为{typeof(T)}。"
                 }
             }
             return result;
         }
+
+        /// <summary>
+        /// 类型转换
+        /// </summary>
+        /// <typeparam name="T">转换目标类型</typeparam>
+        /// <param name="value">需要转换的值</param>
+        /// <param name="defaultValue">转换失败时的默认值</param>
+        /// <param name="ifExceptionReturnDefault">请输入true ，这个参数完全是为了区别重载，没有任何用处。</param>
+        /// <returns>T</returns>
+        public static T To<T>(this object value, T defaultValue, bool ifExceptionReturnDefault)
+        {
+            var result = defaultValue;
+            try
+            {
+                if (value != null)
+                {
+                    result = (T)Convert.ChangeType(value, typeof(T));
+                }
+            }
+            catch (Exception e) { }
+            return result;
+        }
+
         #endregion
 
         #region 返回指定日期的 00:00:00 时间
@@ -346,7 +376,9 @@ namespace CustomFrame.Common
 
         #region t是否在lowerBound 和 upperBound 之间
         /// <summary>
-        /// t是否在lowerBound 和 upperBound 之间
+        /// t是否在lowerBound 和 upperBound 之间 （例如 2 是否在 1 和 3 之间）
+        /// includeLowerBound 是否包含下边界 即 t == lowerBound 的情况
+        /// includeUpperBound 是否包含上边界 即 t == upperBound 的情况
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="t"></param>
