@@ -1,4 +1,4 @@
-﻿namespace CustomFrame.WindowsForms
+﻿namespace Taki.WindowsForms
 {
     partial class FrmPicTest
     {

@@ -1,11 +1,11 @@
-﻿using CustomFrame.Common;
-using CustomFrame.Web.Controllers.Base;
-using CustomFrame.Web.Filters;
+﻿using Taki.Common;
+using Taki.Web.Controllers.Base;
+using Taki.Web.Filters;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
 
-namespace CustomFrame.Web.Controllers.Home
+namespace Taki.Web.Controllers.Home
 {
     public class HomeController : BaseController
     {

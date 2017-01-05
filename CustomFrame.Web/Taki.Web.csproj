@@ -156,7 +156,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Properties\PublishProfiles\CustomFramePublic.pubxml" />
+    <None Include="Properties\PublishProfiles\TakiPublic.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\customJS\ajaxConfig.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -213,13 +213,13 @@
     <Folder Include="Views\TestException\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CustomFrame.Common\CustomFrame.Common.csproj">
+    <ProjectReference Include="..\CustomFrame.Common\Taki.Common.csproj">
       <Project>{caa687b6-b794-4efe-9259-c2f90c9ca057}</Project>
-      <Name>CustomFrame.Common</Name>
+      <Name>Taki.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CustomFrame.Logging\CustomFrame.Logging.csproj">
+    <ProjectReference Include="..\CustomFrame.Logging\Taki.Logging.csproj">
       <Project>{876861ea-a401-463c-859d-41085b582e21}</Project>
-      <Name>CustomFrame.Logging</Name>
+      <Name>Taki.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

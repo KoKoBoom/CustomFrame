@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace CustomFrame.Common
+namespace Taki.Common
 {
     /// <summary>
 	/// 缓存相关的操作类

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CustomFrame.Logging
+namespace Taki.Logging
 {
     internal class Logger4Factory : ILoggerFactory
     {

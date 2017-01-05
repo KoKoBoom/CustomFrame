@@ -10,7 +10,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomFrame.Common
+namespace Taki.Common
 { /// <summary>    
   /// 上传数据参数    
   /// </summary>    

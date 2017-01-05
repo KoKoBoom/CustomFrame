@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomFrame.Common
+namespace Taki.Common
 {
     /// <summary>
 	/// web.config操作类

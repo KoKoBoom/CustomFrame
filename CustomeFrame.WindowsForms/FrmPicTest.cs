@@ -3,10 +3,10 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-using CustomFrame.Common;
-using static CustomFrame.Common.FileExtend;
+using Taki.Common;
+using static Taki.Common.FileExtend;
 
-namespace CustomFrame.WindowsForms
+namespace Taki.WindowsForms
 {
     public partial class FrmPicTest : Form
     {

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Web.Mvc;
 
-namespace CustomFrame.Web.Filters
+namespace Taki.Web.Filters
 {
     #region AjaxExceptionAttribute
     /// <summary>

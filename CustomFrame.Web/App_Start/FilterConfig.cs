@@ -1,8 +1,8 @@
-﻿using CustomFrame.Web.Filters;
+﻿using Taki.Web.Filters;
 using System.Web;
 using System.Web.Mvc;
 
-namespace CustomFrame.Web
+namespace Taki.Web
 {
     public class FilterConfig
     {

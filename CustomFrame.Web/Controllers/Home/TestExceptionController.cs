@@ -1,7 +1,7 @@
-﻿using CustomFrame.Web.Filters;
+﻿using Taki.Web.Filters;
 using System.Web.Mvc;
 
-namespace CustomFrame.Web.Controllers.Home
+namespace Taki.Web.Controllers.Home
 {
     public class TestExceptionController : Controller
     {

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 
-namespace CustomFrame.Common
+namespace Taki.Common
 {
     /// <summary>
     /// File操作

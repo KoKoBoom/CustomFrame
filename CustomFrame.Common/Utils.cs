@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Text;
 
-namespace CustomFrame.Common
+namespace Taki.Common
 {
     public static class Utils
     {

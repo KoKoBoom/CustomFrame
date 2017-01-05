@@ -2,9 +2,9 @@
 
 2016.12.22 更新说明
 
-	移除了 web.config 添加配置的需求，现在不添加配置也可以了，默认是使用log4net作为日志功能（前提是不修改类的空间名，即默认为“CustomFrame.Logging.Logger4Factory”）
+	移除了 web.config 添加配置的需求，现在不添加配置也可以了，默认是使用log4net作为日志功能（前提是不修改类的空间名，即默认为“Taki.Logging.Logger4Factory”）
 
-	1、将 CustomFrame.Logging 工程添加到项目，然后在需要的地方添加项目的引用
+	1、将 Taki.Logging 工程添加到项目，然后在需要的地方添加项目的引用
 	2、调用：
 		LoggerFactory.CreateLog().Info("打印","XXXXXXXXXXXX");
 		LoggerFactory.CreateLog().Debug("错误","XXXXXXXXXXXXXXXXXXXXX");
@@ -12,10 +12,10 @@
 2016.07.06 添加简单说明
 
 一、简单说明：
-	1、将 CustomFrame.Logging 工程添加到项目，然后在需要的地方添加项目的引用
+	1、将 Taki.Logging 工程添加到项目，然后在需要的地方添加项目的引用
 	2、web.config 配置如下：
 		<appSettings>
-			<add key="DefaultLogConfig" value="CustomFrame.Logging.Logger4Factory"/>
+			<add key="DefaultLogConfig" value="Taki.Logging.Logger4Factory"/>
 		</appSettings>
 	3、调用：
 		LoggerFactory.CreateLog().Info("打印","XXXXXXXXXXXX");
@@ -51,7 +51,7 @@
 	3.2 也可以通过在 web.config 设置一下代码
 		<add key="DefaultLogConfig" value="你要使用的日志实现类的绝对限定路径(包括空间名)"/>
 		例如:
-		<add key="DefaultLogConfig" value="CustomFrame.Logging.Logger4Factory"/>
+		<add key="DefaultLogConfig" value="Taki.Logging.Logger4Factory"/>
 		日志实现类 还必须实现 继承接口(ILoggerFactory)的 DefaultFactory 方法
 
 		如果log4net.config在另一个工程里面，则需要对log4net.config文件点右键》属性》复制到输出目录 始终复制。

@@ -88,9 +88,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CustomFrame.Common\CustomFrame.Common.csproj">
+    <ProjectReference Include="..\CustomFrame.Common\Taki.Common.csproj">
       <Project>{caa687b6-b794-4efe-9259-c2f90c9ca057}</Project>
-      <Name>CustomFrame.Common</Name>
+      <Name>Taki.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

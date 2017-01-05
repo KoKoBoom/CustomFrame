@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CustomFrame.Web.Controllers.Home
+namespace Taki.Web.Controllers.Home
 {
     public static class Manager
     {

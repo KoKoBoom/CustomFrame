@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomFrame.Logging
+namespace Taki.Logging
 {
     public class LoggerFactory
     {
@@ -37,7 +37,7 @@ namespace CustomFrame.Logging
 
         static void DefaultConfig()
         {
-            var strDefaultLogConfig = "CustomFrame.Logging.Logger4Factory";
+            var strDefaultLogConfig = "Taki.Logging.Logger4Factory";
             var defColl = System.Configuration.ConfigurationManager.AppSettings["DefaultLogConfig"];
             if (defColl != null && !string.IsNullOrWhiteSpace(defColl.ToString()))
             {

@@ -1,8 +1,8 @@
-﻿using CustomFrame.Logging;
-using CustomFrame.Web.Filters;
+﻿using Taki.Logging;
+using Taki.Web.Filters;
 using System.Web.Mvc;
 
-namespace CustomFrame.Web.Controllers.Base
+namespace Taki.Web.Controllers.Base
 {
     public class BaseController : Controller
     {

@@ -1,9 +1,9 @@
-﻿using CustomFrame.Logging;
+﻿using Taki.Logging;
 using System;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace CustomFrame.Web.Filters
+namespace Taki.Web.Filters
 {
     public class ExceptionHanlder
     {

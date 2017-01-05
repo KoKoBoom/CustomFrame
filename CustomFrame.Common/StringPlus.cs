@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomFrame.Common
+namespace Taki.Common
 {
     public class StringPlus
     {

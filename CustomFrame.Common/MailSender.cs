@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 
-namespace CustomFrame.Common
+namespace Taki.Common
 {
     public class MailSender
     {

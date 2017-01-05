@@ -2,7 +2,7 @@
 using System.Linq;
 
 //[assembly: log4net.Config.XmlConfigurator(ConfigFile = @"log4net.config", Watch = true)]
-namespace CustomFrame.Logging
+namespace Taki.Logging
 {
     internal class Logger4Helper : ILogger
     {
