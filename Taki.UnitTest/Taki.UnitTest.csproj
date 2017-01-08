@@ -55,6 +55,12 @@
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Taki.CommonUtils\Taki.Common\Taki.Common.csproj">
+      <Project>{caa687b6-b794-4efe-9259-c2f90c9ca057}</Project>
+      <Name>Taki.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
