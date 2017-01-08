@@ -213,16 +213,6 @@
     <Folder Include="Models\" />
     <Folder Include="Views\TestException\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Taki.Common\Taki.Common.csproj">
-      <Project>{caa687b6-b794-4efe-9259-c2f90c9ca057}</Project>
-      <Name>Taki.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Taki.Logging\Taki.Logging.csproj">
-      <Project>{876861ea-a401-463c-859d-41085b582e21}</Project>
-      <Name>Taki.Logging</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
