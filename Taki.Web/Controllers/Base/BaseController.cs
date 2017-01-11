@@ -8,13 +8,13 @@ namespace Taki.Web.Controllers.Base
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            LoggerFactory.CreateLog().Info("OnActionExecuting", filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName + "." + filterContext.ActionDescriptor.ActionName);
+            LoggerFactory.Create()?.Info("OnActionExecuting", filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName + "." + filterContext.ActionDescriptor.ActionName);
             base.OnActionExecuting(filterContext);
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            LoggerFactory.CreateLog().Info("OnActionExecuted", filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName + "." + filterContext.ActionDescriptor.ActionName);
+            LoggerFactory.Create()?.Info("OnActionExecuted", filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName + "." + filterContext.ActionDescriptor.ActionName);
             base.OnActionExecuted(filterContext);
         }
 
