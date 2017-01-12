@@ -66,6 +66,7 @@
     <Compile Include="Assistant.cs" />
     <Compile Include="ConfigHelper.cs" />
     <Compile Include="DataCache.cs" />
+    <Compile Include="DEncrypt.cs" />
     <Compile Include="Extensions\Ordinary\Extensions.cs" />
     <Compile Include="Extensions\Linq\WhereIfExtension.cs" />
     <Compile Include="FileExtend.cs" />

@@ -177,15 +177,33 @@ namespace Taki.Common
         #endregion
 
         #region 写入文本文件 如果存在则覆盖
+
         /// <summary>
         /// 写入文本文件 如果存在则覆盖
         /// </summary>
-        /// <param name="fileAbsolutePath"></param>
-        /// <returns></returns>
-        public static void WriteTextFile(string fileAbsolutePath, string contents)
+        /// <param name="fileAbsolutePath">文件绝对路径</param>
+        /// <param name="contents">文件内容</param>
+        /// <param name="fileAttributes">文件属性 可设置隐藏  显示等等</param>
+        public static void WriteTextFile(string fileAbsolutePath, string contents, FileAttributes fileAttributes = FileAttributes.Normal)
         {
+            SetFileAttributes(fileAbsolutePath, FileAttributes.Normal); //将文件设置为可写
             CreateNonExistsDirectory(fileAbsolutePath);
             File.WriteAllText(fileAbsolutePath, contents, Encoding.Default);
+            SetFileAttributes(fileAbsolutePath, fileAttributes);
+        }
+
+        /// <summary>
+        /// 设置文件属性
+        /// </summary>
+        /// <param name="fileAbsolutePath"></param>
+        /// <param name="fileAttributes"></param>
+        private static void SetFileAttributes(string fileAbsolutePath, FileAttributes fileAttributes = FileAttributes.Normal)
+        {
+            FileInfo fileInfo = new FileInfo(fileAbsolutePath);
+            if (fileInfo.Exists)
+            {
+                fileInfo.Attributes = fileAttributes;
+            }
         }
         #endregion
 
