@@ -15,8 +15,7 @@ namespace Taki.Common
          * 不过GC回收机制对 MemoryStream 这种托管代码管理的还行，释不释放都还OK 
          */
 
-
-        #region ReadAllBytes 方式读取图片 （推荐。可以读取任何图片文件 代码量少）
+        #region ReadAllBytes 方式读取图片 并且不占用 （推荐。可以读取任何图片文件 代码量少）
         /// <summary>
         /// ReadAllBytes 方式读取图片 （推荐。可以读取任何图片文件）
         /// </summary>
@@ -178,18 +177,33 @@ namespace Taki.Common
         #endregion
 
         #region 写入文本文件 如果存在则覆盖
+
         /// <summary>
         /// 写入文本文件 如果存在则覆盖
         /// </summary>
-        /// <param name="fileAbsolutePath"></param>
-        /// <returns></returns>
-        public static void WriteTextFile(string fileAbsolutePath, string contents)
+        /// <param name="fileAbsolutePath">文件绝对路径</param>
+        /// <param name="contents">文件内容</param>
+        /// <param name="fileAttributes">文件属性 可设置隐藏  显示等等</param>
+        public static void WriteTextFile(string fileAbsolutePath, string contents, FileAttributes fileAttributes = FileAttributes.Normal)
         {
-            if (!Directory.Exists(Path.GetDirectoryName(fileAbsolutePath)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(fileAbsolutePath));
-            }
+            SetFileAttributes(fileAbsolutePath, FileAttributes.Normal); //将文件设置为可写
+            CreateNonExistsDirectory(fileAbsolutePath);
             File.WriteAllText(fileAbsolutePath, contents, Encoding.Default);
+            SetFileAttributes(fileAbsolutePath, fileAttributes);
+        }
+
+        /// <summary>
+        /// 设置文件属性
+        /// </summary>
+        /// <param name="fileAbsolutePath"></param>
+        /// <param name="fileAttributes"></param>
+        private static void SetFileAttributes(string fileAbsolutePath, FileAttributes fileAttributes = FileAttributes.Normal)
+        {
+            FileInfo fileInfo = new FileInfo(fileAbsolutePath);
+            if (fileInfo.Exists)
+            {
+                fileInfo.Attributes = fileAttributes;
+            }
         }
         #endregion
 
@@ -206,5 +220,68 @@ namespace Taki.Common
         }
         #endregion
 
+        #region 检查目录是否存在 不存在则创建
+        /// <summary>
+        /// 检查目录是否存在 不存在则创建
+        /// </summary>
+        /// <param name="directoryOrPath">目录或者路径（可包含文件名，本方法会忽略文件）</param>
+        private static void CreateNonExistsDirectory(string directoryOrPath)
+        {
+            var directory = Path.GetDirectoryName(directoryOrPath);
+            if (!Directory.Exists(directory))//若文件夹不存在则新建文件夹  
+            {
+                Directory.CreateDirectory(directory); //新建文件夹  
+            }
+        }
+        #endregion
+
+        #region MP3 转 WAV
+        /// <summary>
+        /// MP3 转 WAV
+        /// </summary>
+        /// <param name="mp3filePath"></param>
+        /// <param name="wavfilePath"></param>
+        public static void Mp3ToWav(string mp3filePath, string wavfilePath)
+        {
+            CreateNonExistsDirectory(wavfilePath);
+
+            using (NAudio.Wave.Mp3FileReader reader = new NAudio.Wave.Mp3FileReader(mp3filePath))
+            {
+                using (NAudio.Wave.WaveStream pcmStream = NAudio.Wave.WaveFormatConversionStream.CreatePcmStream(reader))
+                {
+                    NAudio.Wave.WaveFileWriter.CreateWaveFile(wavfilePath, pcmStream);
+                }
+            }
+        }
+        #endregion
+
+        #region Copy一份文件的副本到新的目录
+        /// <summary>
+        /// Copy一份文件的副本到新的目录
+        /// </summary>
+        /// <param name="oldFileName"></param>
+        /// <param name="oldFileAbsolutePath"></param>
+        /// <param name="newFileDirectory"></param>
+        /// <returns>复制后的文件的绝对路径</returns>
+        public static void CopyFileToNewPath(string oldFileAbsolutePath, string newFileAbsolutePath, bool throwException = false)
+        {
+            try
+            {
+                CreateNonExistsDirectory(newFileAbsolutePath);
+                File.Copy(oldFileAbsolutePath, newFileAbsolutePath, true);
+            }
+            catch (Exception ex)
+            {
+                if (throwException)
+                {
+                    throw ex;
+                }
+                else
+                {
+                    Taki.Logging.LoggerFactory.Create()?.Error(ex);
+                }
+            }
+        }
+        #endregion
     }
 }
