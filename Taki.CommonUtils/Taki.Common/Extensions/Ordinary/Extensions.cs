@@ -553,5 +553,73 @@ namespace Taki.Common
         }
         #endregion
 
+        #region 切分
+        /// <summary>
+        /// 切分
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="speater"></param>
+        /// <param name="toLower"></param>
+        /// <returns></returns>
+        public static List<string> SplitArray(this string str, char speater, bool toLower = false)
+        {
+            if (str.IsNotNullAndWhiteSpace() && speater != Char.MinValue)
+            {
+                List<string> list = new List<string>();
+                if (toLower) { str.ToLower(); }
+                string[] ss = str.Split(speater);
+                if (ss.IsNotNull())
+                {
+                    list = ss.ToList();
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 切分，默认切分 “，”
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string[] SplitArray(this string str)
+        {
+            return str.Split(new char[',']);
+        }
+
+        /// <summary>
+        /// 按 speater 连接成字符串 如果 list 为空 返回null
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="speater"></param>
+        /// <returns> 如果 list 为空 返回null</returns>
+        public static string Join(this List<string> list, string speater)
+        {
+            if (list.IsNotNull())
+            {
+                return string.Join(speater, list);
+            }
+            return null;
+        }
+        #endregion
+
+        #region 删除最后一个字符之后的字符
+
+        /// <summary>
+        /// 删除最后结尾的一个逗号
+        /// </summary>
+        public static string DelLastComma(this string str)
+        {
+            return str.Substring(0, str.LastIndexOf(","));
+        }
+
+        /// <summary>
+        /// 删除最后结尾的指定字符后的字符
+        /// </summary>
+        public static string DelLastChar(this string str, string strchar)
+        {
+            return str.Substring(0, str.LastIndexOf(strchar));
+        }
+        #endregion
+
     }
 }
