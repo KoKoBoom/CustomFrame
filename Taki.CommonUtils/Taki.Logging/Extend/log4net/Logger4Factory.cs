@@ -34,6 +34,10 @@ namespace Taki.Logging
             var path = System.AppDomain.CurrentDomain.BaseDirectory + "\\bin\\Extend\\log4net\\log4net.config"; //Web网站
             if (!System.IO.File.Exists(path))
             {
+                path = System.AppDomain.CurrentDomain.BaseDirectory + "\\Extend\\log4net\\log4net.config"; //Unit测试
+            }
+            if (!System.IO.File.Exists(path))
+            {
                 path = System.Windows.Forms.Application.StartupPath + "\\Extend\\log4net\\log4net.config";//WinForm程序
             }
             SetConfig(path);

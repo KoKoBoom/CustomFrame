@@ -18,7 +18,7 @@ namespace Taki.Web.Controllers.Home
         public JsonResult GetData(string id)
         {
             var strDate = "2016-11-16 17:23:50";
-            return Json(new { OK = "OK", StrDateTime = strDate.GetStrToDayEndDateTime() }, JsonRequestBehavior.AllowGet);
+            return Json(new { OK = "OK", StrDateTime = strDate.GetToDayEndDateTime() }, JsonRequestBehavior.AllowGet);
         }
     }
 }
