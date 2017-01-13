@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Taki.Logging;
 
 namespace Taki.Common
 {
@@ -76,29 +78,133 @@ namespace Taki.Common
         /// 返回指定日期的 00:00:00 时间
         /// </summary>
         /// <param name="dateTime"></param>
+        /// <param name="isReturnDefault">【true:返回默认值 1970-01-01】 【false:抛出异常】</param>
         /// <returns></returns>
-        public static DateTime GetToDayStartDateTime(this DateTime dateTime)
+        public static DateTime GetToDayBeginDateTime(this DateTime dateTime, bool isReturnDefault = true)
         {
-            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
+            try
+            {
+                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
+            }
+            catch (Exception) { if (!isReturnDefault) throw; }
+            return new DateTime(1970, 01, 01, 00, 00, 00);
         }
         /// <summary>
         /// 返回指定日期的 00:00:00 时间
         /// </summary>
         /// <param name="dateTime"></param>
+        /// <param name="defaultValue">如果异常则返回 defaultDateTime</param>
+        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
         /// <returns></returns>
-        public static DateTime GetToDayStartDateTime(this string dateTime)
+        public static DateTime GetToDayBeginDateTime(this DateTime dateTime, DateTime defaultValue, bool isWriteLog = true)
         {
-            var _dateTime = Convert.ToDateTime(dateTime);
-            return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 0, 0, 0);
+            try
+            {
+                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
+            }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            return defaultValue;
         }
+
         /// <summary>
         /// 返回指定日期的 00:00:00 时间
         /// </summary>
         /// <param name="dateTime"></param>
+        /// <param name="defaultValue">如果异常则返回 defaultValue</param>
+        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
         /// <returns></returns>
-        public static string GetStrToDayStartDateTime(this string dateTime, string format = "yyyy-MM-dd HH:mm:ss")
+        public static DateTime GetToDayBeginDateTime(this DateTime dateTime, string defaultValue, bool isWriteLog = true)
         {
-            return GetToDayStartDateTime(dateTime).ToString(format);
+            try
+            {
+                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
+            }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            return defaultValue.GetToDayBeginDateTime();
+        }
+
+        /// <summary>
+        /// 返回指定日期的 00:00:00 时间
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="isReturnDefault">【true:返回默认值 1970-01-01】 【false:抛出异常】</param>
+        /// <returns></returns>
+        public static DateTime GetToDayBeginDateTime(this string dateTime, bool isReturnDefault = true)
+        {
+            var defaultValue = new DateTime(1970, 01, 01, 00, 00, 00);
+            try
+            {
+                var _dateTime = dateTime.To<DateTime>(defaultValue, true);
+                return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 0, 0, 0);
+            }
+            catch (Exception) { if (!isReturnDefault) throw; }
+            return defaultValue;
+        }
+
+        public static string GetCodeLineAndFileName()
+        {
+            StackTrace insStackTrace = new StackTrace(true);
+            StackFrame insStackFrame = insStackTrace.GetFrame(1);
+            return String.Format("File: {0}, Line: {1}", insStackFrame.GetFileName(), insStackFrame.GetFileLineNumber());
+        }
+
+        /// <summary>
+        /// 返回指定日期的 00:00:00 时间
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="defaultValue"> 【如果异常则返回 defaultValue】 ,【如果 defaultValue 也异常 则返回1970-01-01 00:00:00】</param>
+        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
+        /// <returns></returns>
+        public static DateTime GetToDayBeginDateTime(this string dateTime, string defaultValue, bool isWriteLog = true)
+        {
+            try
+            {
+                var _dateTime = dateTime.To<DateTime>(false);
+                return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 0, 0, 0);
+            }
+            catch (Exception ex)
+            {
+                List<string> listInfo = new List<string>();
+                var i = 1;
+                while (true)
+                {
+                    StackFrame st = new StackTrace(true).GetFrame(i++);
+                    if (st == null)
+                    {
+                        break;
+                    }
+                    var temp1 = st.GetFileName();
+                    var temp2 = st.GetFileLineNumber();
+                    if (temp2 == 0)
+                    {
+                        break;
+                    }
+                    listInfo.Add(String.Format("在{0} 行号：{1}", st.GetFileName(), st.GetFileLineNumber()));
+                }
+                var msg = listInfo.Join("\r\n");
+
+                if (isWriteLog) LoggerFactory.Create()?.Error(ex.Message + "\r\n" + msg, ex);
+
+            }
+            return defaultValue.GetToDayBeginDateTime();
+        }
+
+        /// <summary>
+        /// 返回指定日期的 00:00:00 时间
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="defaultValue">【如果异常则返回 defaultValue】</param>
+        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
+        /// <returns></returns>
+        public static DateTime GetToDayBeginDateTime(this string dateTime, DateTime defaultValue, bool isWriteLog = true)
+        {
+            try
+            {
+                var _dateTime = dateTime.To<DateTime>(false);
+                return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 0, 0, 0);
+            }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            return defaultValue;
         }
         #endregion
 
@@ -108,28 +214,103 @@ namespace Taki.Common
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        public static DateTime GetToDayEndDateTime(this DateTime dateTime)
+        public static DateTime GetToDayEndDateTime(this DateTime dateTime, bool isReturnDefault = true)
         {
-            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
+            try
+            {
+                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
+            }
+            catch (Exception) { if (!isReturnDefault) throw; }
+            return new DateTime(9999, 12, 31, 23, 59, 59);
         }
+
         /// <summary>
         /// 返回指定日期的 23:59:59 时间
         /// </summary>
         /// <param name="dateTime"></param>
+        /// <param name="defaultDateTime">如果异常则返回 defaultDateTime</param>
+        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
         /// <returns></returns>
-        public static DateTime GetToDayEndDateTime(this string dateTime)
+        public static DateTime GetToDayEndDateTime(this DateTime dateTime, DateTime defaultDateTime, bool isWriteLog = true)
         {
-            var _dateTime = Convert.ToDateTime(dateTime);
-            return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 23, 59, 59);
+            try
+            {
+                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
+            }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            return defaultDateTime;
         }
+
         /// <summary>
         /// 返回指定日期的 23:59:59 时间
         /// </summary>
         /// <param name="dateTime"></param>
+        /// <param name="defaultDateTime">如果异常则返回 defaultDateTime</param>
+        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
         /// <returns></returns>
-        public static string GetStrToDayEndDateTime(this string dateTime, string format = "yyyy-MM-dd HH:mm:ss")
+        public static DateTime GetToDayEndDateTime(this DateTime dateTime, string defaultDateTime, bool isWriteLog = true)
         {
-            return GetToDayEndDateTime(dateTime).ToString(format);
+            try
+            {
+                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
+            }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            return defaultDateTime.GetToDayEndDateTime();
+        }
+
+        /// <summary>
+        /// 返回指定日期的 23:59:59 时间
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="isReturnDefault">【true:返回默认值 9999-12-31 23:59:59】 【false:抛出异常】</param>
+        /// <returns></returns>
+        public static DateTime GetToDayEndDateTime(this string dateTime, bool isReturnDefault = true)
+        {
+            var defaultValue = new DateTime(9999, 12, 31, 23, 59, 59);    //这里可以用 DateTime.MaxValue ，但是MaxValue将来肯能会改成其他值，具有不确定性。
+            try
+            {
+                var _dateTime = dateTime.To<DateTime>(defaultValue, true);
+                return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 23, 59, 59);
+            }
+            catch (Exception) { if (!isReturnDefault) throw; }
+            return defaultValue;
+        }
+
+
+        /// <summary>
+        /// 返回指定日期的 23:59:59 时间
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="defaultValue"> 【如果异常则返回 defaultValue】 ,【如果 defaultValue 也异常 则返回 9999-12-31 23:59:59】</param>
+        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
+        /// <returns></returns>
+        public static DateTime GetToDayEndDateTime(this string dateTime, string defaultValue, bool isWriteLog = true)
+        {
+            try
+            {
+                var _dateTime = dateTime.To<DateTime>(false);
+                return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 23, 59, 59);
+            }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            return defaultValue.GetToDayEndDateTime();
+        }
+
+        /// <summary>
+        /// 返回指定日期的 23:59:59 时间
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="defaultValue">【如果异常则返回 defaultValue】</param>
+        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
+        /// <returns></returns>
+        public static DateTime GetToDayEndDateTime(this string dateTime, DateTime defaultValue, bool isWriteLog = true)
+        {
+            try
+            {
+                var _dateTime = dateTime.To<DateTime>(false);
+                return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 23, 59, 59);
+            }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            return defaultValue;
         }
         #endregion
 
@@ -141,11 +322,11 @@ namespace Taki.Common
         /// <returns></returns>
         public static DateTime StampToDateTime(this int timeStamp)
         {
-            DateTime dateTimeStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            DateTime dateTimeBegin = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             long lTime = long.Parse(timeStamp + "0000000");
             TimeSpan toNow = new TimeSpan(lTime);
 
-            return dateTimeStart.Add(toNow);
+            return dateTimeBegin.Add(toNow);
         }
         #endregion
 
@@ -607,17 +788,20 @@ namespace Taki.Common
         /// <summary>
         /// 删除最后结尾的一个逗号
         /// </summary>
-        public static string DelLastComma(this string str)
+        public static string TrimEnd(this string str)
         {
-            return str.Substring(0, str.LastIndexOf(","));
+            return str.TrimEnd(',');
         }
 
         /// <summary>
         /// 删除最后结尾的指定字符后的字符
         /// </summary>
-        public static string DelLastChar(this string str, string strchar)
+        public static string TrimEnd(this string str, string strchar)
         {
-            return str.Substring(0, str.LastIndexOf(strchar));
+            var index = str.LastIndexOf(strchar);
+            if (index > -1)
+                return str.Substring(0, index);
+            return str;
         }
         #endregion
 

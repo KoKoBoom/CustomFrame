@@ -167,7 +167,7 @@ namespace Taki.Logging
 
         #endregion
 
-        #region MyRegion
+        #region Error
 
         /// <summary>
         /// Log error message
