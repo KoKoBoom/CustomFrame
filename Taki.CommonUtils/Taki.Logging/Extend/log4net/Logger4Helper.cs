@@ -5,7 +5,9 @@
 ** Desc：	Log4net帮助类
 *********************************************************************************/
 using System;
+using System.Diagnostics;
 using System.Linq;
+using Taki.Logging;
 
 //[assembly: log4net.Config.XmlConfigurator(ConfigFile = @"log4net.config", Watch = true)]
 namespace Taki.Logging
@@ -175,7 +177,28 @@ namespace Taki.Logging
         /// <param name="exception"></param>
         public void Error(Exception exception)
         {
-            Error("", exception);
+            try
+            {
+                log4net.ILog log = log4net.LogManager.GetLogger(Paramer(null));
+                log.Error("", exception);
+            }
+            catch (Exception) { }
+        }
+
+        /// <summary>
+        /// 简单日志
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="depth"></param>
+        /// <param name="maxDepth"></param>
+        public void Error(string message, int depth, int maxDepth = 2)
+        {
+            try
+            {
+                log4net.ILog log = log4net.LogManager.GetLogger(Paramer(null));
+                log.Error(message + "\r\n" + StackTraceLinkedList.GetStrLinkedList(depth + 2, maxDepth + 2));
+            }
+            catch (Exception) { }
         }
 
         /// <summary>
@@ -208,11 +231,43 @@ namespace Taki.Logging
             }
             catch (Exception) { }
         }
+
+        /// <summary>
+        /// 写入异常类的上级调用，一般用于公共方法、全局异常捕获等方法里面的异常写入
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <param name="depth"></param>
+        /// <param name="maxDepth"></param>
+        public void Error(Exception exception, int depth, int maxDepth = 5)
+        {
+            try
+            {
+                Error(exception.Message, exception, depth + 1, maxDepth + 1);
+            }
+            catch (Exception) { }
+        }
+
+        /// <summary>
+        /// 写入异常类的上级调用，一般用于公共方法、全局异常捕获等方法里面的异常写入
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="exception"></param>
+        /// <param name="depth"></param>
+        /// <param name="maxDepth"></param>
+        public void Error(string message, Exception exception, int depth, int maxDepth = 5)
+        {
+            try
+            {
+                log4net.ILog log = log4net.LogManager.GetLogger(new StackTrace(true).GetFrame(depth + 1).GetMethod().DeclaringType);
+                log.Error(message + "\r\n" + StackTraceLinkedList.GetStrLinkedList(depth + 2, maxDepth + 2), exception);
+            }
+            catch (Exception) { }
+        }
         #endregion
 
         string Paramer(object[] args)
         {
-            return (args != null && args.Count() > 0) ? args[0].ToString() : System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString();
+            return (args != null && args.Count() > 0) ? args[0].ToString() : new StackTrace(true).GetFrame(2).GetMethod().DeclaringType.ToString();
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Taki.Logging;
 
@@ -39,13 +41,7 @@ namespace Taki.Common
                     throw new FormatException();
                 }
             }
-            catch (Exception e)
-            {
-                if (!isReturnDefault)
-                {
-                    throw e;//$"无法将 '{ value }' 转换为{typeof(T)}。"
-                }
-            }
+            catch (Exception) { if (!isReturnDefault) { throw; } }
             return result;
         }
 
@@ -59,16 +55,15 @@ namespace Taki.Common
         /// <returns>T</returns>
         public static T To<T>(this object value, T defaultValue, bool ifExceptionReturnDefault)
         {
-            var result = defaultValue;
             try
             {
                 if (value != null)
                 {
-                    result = (T)Convert.ChangeType(value, typeof(T));
+                    defaultValue = (T)Convert.ChangeType(value, typeof(T));
                 }
             }
-            catch (Exception e) { }
-            return result;
+            catch (Exception) { }
+            return defaultValue;
         }
 
         #endregion
@@ -89,39 +84,6 @@ namespace Taki.Common
             catch (Exception) { if (!isReturnDefault) throw; }
             return new DateTime(1970, 01, 01, 00, 00, 00);
         }
-        /// <summary>
-        /// 返回指定日期的 00:00:00 时间
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <param name="defaultValue">如果异常则返回 defaultDateTime</param>
-        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
-        /// <returns></returns>
-        public static DateTime GetToDayBeginDateTime(this DateTime dateTime, DateTime defaultValue, bool isWriteLog = true)
-        {
-            try
-            {
-                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
-            }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
-            return defaultValue;
-        }
-
-        /// <summary>
-        /// 返回指定日期的 00:00:00 时间
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <param name="defaultValue">如果异常则返回 defaultValue</param>
-        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
-        /// <returns></returns>
-        public static DateTime GetToDayBeginDateTime(this DateTime dateTime, string defaultValue, bool isWriteLog = true)
-        {
-            try
-            {
-                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
-            }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
-            return defaultValue.GetToDayBeginDateTime();
-        }
 
         /// <summary>
         /// 返回指定日期的 00:00:00 时间
@@ -141,51 +103,21 @@ namespace Taki.Common
             return defaultValue;
         }
 
-        public static string GetCodeLineAndFileName()
-        {
-            StackTrace insStackTrace = new StackTrace(true);
-            StackFrame insStackFrame = insStackTrace.GetFrame(1);
-            return String.Format("File: {0}, Line: {1}", insStackFrame.GetFileName(), insStackFrame.GetFileLineNumber());
-        }
-
         /// <summary>
         /// 返回指定日期的 00:00:00 时间
         /// </summary>
         /// <param name="dateTime"></param>
         /// <param name="defaultValue"> 【如果异常则返回 defaultValue】 ,【如果 defaultValue 也异常 则返回1970-01-01 00:00:00】</param>
-        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
+        /// <param name="isWriteLog">转换失败是否需要写入日志【默认不写日志】</param>
         /// <returns></returns>
-        public static DateTime GetToDayBeginDateTime(this string dateTime, string defaultValue, bool isWriteLog = true)
+        public static DateTime GetToDayBeginDateTime(this string dateTime, string defaultValue, bool isWriteLog = false)
         {
             try
             {
                 var _dateTime = dateTime.To<DateTime>(false);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 0, 0, 0);
             }
-            catch (Exception ex)
-            {
-                List<string> listInfo = new List<string>();
-                var i = 1;
-                while (true)
-                {
-                    StackFrame st = new StackTrace(true).GetFrame(i++);
-                    if (st == null)
-                    {
-                        break;
-                    }
-                    var temp1 = st.GetFileName();
-                    var temp2 = st.GetFileLineNumber();
-                    if (temp2 == 0)
-                    {
-                        break;
-                    }
-                    listInfo.Add(String.Format("在{0} 行号：{1}", st.GetFileName(), st.GetFileLineNumber()));
-                }
-                var msg = listInfo.Join("\r\n");
-
-                if (isWriteLog) LoggerFactory.Create()?.Error(ex.Message + "\r\n" + msg, ex);
-
-            }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将{dateTime}转换为日期时间", ex, 1); }
             return defaultValue.GetToDayBeginDateTime();
         }
 
@@ -194,16 +126,16 @@ namespace Taki.Common
         /// </summary>
         /// <param name="dateTime"></param>
         /// <param name="defaultValue">【如果异常则返回 defaultValue】</param>
-        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
+        /// <param name="isWriteLog">转换失败是否需要写入日志【默认不写日志】</param>
         /// <returns></returns>
-        public static DateTime GetToDayBeginDateTime(this string dateTime, DateTime defaultValue, bool isWriteLog = true)
+        public static DateTime GetToDayBeginDateTime(this string dateTime, DateTime defaultValue, bool isWriteLog = false)
         {
             try
             {
                 var _dateTime = dateTime.To<DateTime>(false);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 0, 0, 0);
             }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将{dateTime}转换为日期时间", ex, 1); }
             return defaultValue;
         }
         #endregion
@@ -222,40 +154,6 @@ namespace Taki.Common
             }
             catch (Exception) { if (!isReturnDefault) throw; }
             return new DateTime(9999, 12, 31, 23, 59, 59);
-        }
-
-        /// <summary>
-        /// 返回指定日期的 23:59:59 时间
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <param name="defaultDateTime">如果异常则返回 defaultDateTime</param>
-        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
-        /// <returns></returns>
-        public static DateTime GetToDayEndDateTime(this DateTime dateTime, DateTime defaultDateTime, bool isWriteLog = true)
-        {
-            try
-            {
-                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
-            }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
-            return defaultDateTime;
-        }
-
-        /// <summary>
-        /// 返回指定日期的 23:59:59 时间
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <param name="defaultDateTime">如果异常则返回 defaultDateTime</param>
-        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
-        /// <returns></returns>
-        public static DateTime GetToDayEndDateTime(this DateTime dateTime, string defaultDateTime, bool isWriteLog = true)
-        {
-            try
-            {
-                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
-            }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
-            return defaultDateTime.GetToDayEndDateTime();
         }
 
         /// <summary>
@@ -282,16 +180,16 @@ namespace Taki.Common
         /// </summary>
         /// <param name="dateTime"></param>
         /// <param name="defaultValue"> 【如果异常则返回 defaultValue】 ,【如果 defaultValue 也异常 则返回 9999-12-31 23:59:59】</param>
-        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
+        /// <param name="isWriteLog">转换失败是否需要写入日志【默认不写日志】</param>
         /// <returns></returns>
-        public static DateTime GetToDayEndDateTime(this string dateTime, string defaultValue, bool isWriteLog = true)
+        public static DateTime GetToDayEndDateTime(this string dateTime, string defaultValue, bool isWriteLog = false)
         {
             try
             {
                 var _dateTime = dateTime.To<DateTime>(false);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 23, 59, 59);
             }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将{dateTime}转换为日期时间", ex, 1); }
             return defaultValue.GetToDayEndDateTime();
         }
 
@@ -300,16 +198,16 @@ namespace Taki.Common
         /// </summary>
         /// <param name="dateTime"></param>
         /// <param name="defaultValue">【如果异常则返回 defaultValue】</param>
-        /// <param name="isWriteLog">如果异常是否需要写入日志【默认写入日志】</param>
+        /// <param name="isWriteLog">转换失败是否需要写入日志【默认不写日志】</param>
         /// <returns></returns>
-        public static DateTime GetToDayEndDateTime(this string dateTime, DateTime defaultValue, bool isWriteLog = true)
+        public static DateTime GetToDayEndDateTime(this string dateTime, DateTime defaultValue, bool isWriteLog = false)
         {
             try
             {
                 var _dateTime = dateTime.To<DateTime>(false);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 23, 59, 59);
             }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error(ex); }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将{dateTime}转换为日期时间", ex, 1); }
             return defaultValue;
         }
         #endregion
@@ -744,9 +642,9 @@ namespace Taki.Common
         /// <returns></returns>
         public static List<string> SplitArray(this string str, char speater, bool toLower = false)
         {
+            List<string> list = new List<string>();
             if (str.IsNotNullAndWhiteSpace() && speater != Char.MinValue)
             {
-                List<string> list = new List<string>();
                 if (toLower) { str.ToLower(); }
                 string[] ss = str.Split(speater);
                 if (ss.IsNotNull())
@@ -754,7 +652,7 @@ namespace Taki.Common
                     list = ss.ToList();
                 }
             }
-            return null;
+            return list;
         }
 
         /// <summary>

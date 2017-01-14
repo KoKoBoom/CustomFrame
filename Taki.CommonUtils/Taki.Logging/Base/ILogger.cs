@@ -91,6 +91,14 @@ namespace Taki.Logging
         void Error(Exception exception);
 
         /// <summary>
+        /// 简单异常
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="depth"></param>
+        /// <param name="maxDepth"></param>
+        void Error(string message, int depth, int maxDepth = 2);
+
+        /// <summary>
         ///   Log error message
         /// </summary>
         /// <param name="message"> The error message to write </param>
@@ -104,5 +112,23 @@ namespace Taki.Logging
         /// <param name="exception"> The exception associated with this error </param>
         /// <param name="args"> The arguments values </param>
         void Error(string message, Exception exception, params object[] args);
+
+        /// <summary>
+        /// 写入异常，一般用于公共方法、全局异常捕获写入日志，depth表示向上的调用方法的深度，当前方法为0，每上一层加1，默认向上最大查找5层
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="exception"></param>
+        /// <param name="depth"></param>
+        /// <param name="maxDepth"></param>
+        void Error(Exception exception, int depth, int maxDepth = 5);
+
+        /// <summary>
+        /// 写入异常，一般用于公共方法、全局异常捕获写入日志，depth表示向上的调用方法的深度，当前方法为0，每上一层加1，默认向上最大查找5层
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="exception"></param>
+        /// <param name="depth"></param>
+        /// <param name="maxDepth"></param>
+        void Error(string message, Exception exception, int depth, int maxDepth = 5);
     }
 }

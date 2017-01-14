@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taki.Common", "Taki.CommonU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taki.Logging", "Taki.CommonUtils\Taki.Logging\Taki.Logging.csproj", "{876861EA-A401-463C-859D-41085B582E21}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taki.ConsoleApp", "Taki.ConsoleApp\Taki.ConsoleApp.csproj", "{9A5E1E46-3FDB-41F7-88E2-03D9457D1E57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{876861EA-A401-463C-859D-41085B582E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{876861EA-A401-463C-859D-41085B582E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{876861EA-A401-463C-859D-41085B582E21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A5E1E46-3FDB-41F7-88E2-03D9457D1E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A5E1E46-3FDB-41F7-88E2-03D9457D1E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A5E1E46-3FDB-41F7-88E2-03D9457D1E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A5E1E46-3FDB-41F7-88E2-03D9457D1E57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,5 +108,6 @@ Global
 		{82A67A79-5AD8-43F5-8660-34C8193D4887} = {484529C4-11A2-44E9-A0E1-73FE22D56318}
 		{CAA687B6-B794-4EFE-9259-C2F90C9CA057} = {52862466-D46D-453C-8779-E12C710120DE}
 		{876861EA-A401-463C-859D-41085B582E21} = {52862466-D46D-453C-8779-E12C710120DE}
+		{9A5E1E46-3FDB-41F7-88E2-03D9457D1E57} = {C5DFAE99-40FC-4DB7-91D3-CBC0526CC8EF}
 	EndGlobalSection
 EndGlobal
