@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using Taki.Logging;
 
 namespace Taki.Common
@@ -89,7 +90,7 @@ namespace Taki.Common
         /// 返回指定日期的 00:00:00 时间
         /// </summary>
         /// <param name="dateTime"></param>
-        /// <param name="isReturnDefault">【true:返回默认值 1970-01-01】 【false:抛出异常】</param>
+        /// <param name="isReturnDefault">如果发生异常是否返回默认值【true:返回默认值 1970-01-01】 【false:抛出异常】</param>
         /// <returns></returns>
         public static DateTime GetToDayBeginDateTime(this string dateTime, bool isReturnDefault = true)
         {
@@ -117,7 +118,7 @@ namespace Taki.Common
                 var _dateTime = dateTime.To<DateTime>(false);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 0, 0, 0);
             }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将{dateTime}转换为日期时间", ex, 1); }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将 {dateTime} 转换为日期时间", ex, 1); }
             return defaultValue.GetToDayBeginDateTime();
         }
 
@@ -135,7 +136,7 @@ namespace Taki.Common
                 var _dateTime = dateTime.To<DateTime>(false);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 0, 0, 0);
             }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将{dateTime}转换为日期时间", ex, 1); }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将 {dateTime} 转换为日期时间", ex, 1); }
             return defaultValue;
         }
         #endregion
@@ -160,7 +161,7 @@ namespace Taki.Common
         /// 返回指定日期的 23:59:59 时间
         /// </summary>
         /// <param name="dateTime"></param>
-        /// <param name="isReturnDefault">【true:返回默认值 9999-12-31 23:59:59】 【false:抛出异常】</param>
+        /// <param name="isReturnDefault">如果发生异常是否返回默认值【true:返回默认值 9999-12-31 23:59:59】 【false:抛出异常】</param>
         /// <returns></returns>
         public static DateTime GetToDayEndDateTime(this string dateTime, bool isReturnDefault = true)
         {
@@ -189,7 +190,7 @@ namespace Taki.Common
                 var _dateTime = dateTime.To<DateTime>(false);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 23, 59, 59);
             }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将{dateTime}转换为日期时间", ex, 1); }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将 {dateTime} 转换为日期时间", ex, 1); }
             return defaultValue.GetToDayEndDateTime();
         }
 
@@ -207,7 +208,7 @@ namespace Taki.Common
                 var _dateTime = dateTime.To<DateTime>(false);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 23, 59, 59);
             }
-            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将{dateTime}转换为日期时间", ex, 1); }
+            catch (Exception ex) { if (isWriteLog) LoggerFactory.Create()?.Error($"无法将 {dateTime} 转换为日期时间", ex, 1); }
             return defaultValue;
         }
         #endregion
@@ -243,13 +244,16 @@ namespace Taki.Common
 
         #region 字符串真实长度 如:一个汉字为两个字节
         /// <summary>
-        /// 字符串真实长度 如:一个汉字为两个字节
+        /// 字符串真实长度 如:一个汉字为两个字节  Null或者"" 返回 0
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
         public static int LengthReal(this string s)
         {
-            return Encoding.Default.GetBytes(s).Length;
+            if (s.IsNotNullAndEmpty())
+                return Encoding.Default.GetBytes(s).Length;
+            else
+                return 0;
         }
         #endregion
 
@@ -261,18 +265,22 @@ namespace Taki.Common
         /// <returns>全角字符串</returns>
         public static string ToSBC(this string input)
         {
-            char[] c = input.ToCharArray();
-            for (int i = 0; i < c.Length; i++)
+            if (input.IsNotNullAndEmpty())
             {
-                if (c[i] == 32)
+                char[] c = input.ToCharArray();
+                for (int i = 0; i < c.Length; i++)
                 {
-                    c[i] = (char)12288;
-                    continue;
+                    if (c[i] == 32)
+                    {
+                        c[i] = (char)12288;
+                        continue;
+                    }
+                    if (c[i] < 127)
+                        c[i] = (char)(c[i] + 65248);
                 }
-                if (c[i] < 127)
-                    c[i] = (char)(c[i] + 65248);
+                return new string(c);
             }
-            return new string(c);
+            return string.Empty;
         }
         #endregion
 
@@ -284,18 +292,22 @@ namespace Taki.Common
         /// <returns>半角字符串</returns>
         public static string ToDBC(this string input)
         {
-            char[] c = input.ToCharArray();
-            for (int i = 0; i < c.Length; i++)
+            if (input.IsNotNullAndWhiteSpace())
             {
-                if (c[i] == 12288)
+                char[] c = input.ToCharArray();
+                for (int i = 0; i < c.Length; i++)
                 {
-                    c[i] = (char)32;
-                    continue;
+                    if (c[i] == 12288)
+                    {
+                        c[i] = (char)32;
+                        continue;
+                    }
+                    if (c[i] > 65280 && c[i] < 65375)
+                        c[i] = (char)(c[i] - 65248);
                 }
-                if (c[i] > 65280 && c[i] < 65375)
-                    c[i] = (char)(c[i] - 65248);
+                return new string(c);
             }
-            return new string(c);
+            return string.Empty;
         }
         #endregion
 
@@ -331,8 +343,9 @@ namespace Taki.Common
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="isReturnDefaultValue">是否返回默认值 ==》 【true: 返回默认值(null)】 【false: 抛出异常】<</param>
+        /// <param name="isWriteLog">转换失败是否需要写入日志【默认不写日志】</param>
         /// <returns></returns>
-        public static string ToJson(this object obj, bool isReturnDefaultValue = true)
+        public static string ToJson(this object obj, bool isReturnDefaultValue = true, bool isWriteLog = false)
         {
             try
             {
@@ -342,6 +355,7 @@ namespace Taki.Common
             {
                 if (!isReturnDefaultValue)
                     throw new Exception("序列化 Json 失败", ex);
+                if (isWriteLog) LoggerFactory.Create()?.Error($"序列化 Json 失败", ex, 1);
             }
             return null;
         }
@@ -352,7 +366,7 @@ namespace Taki.Common
         /// <param name="obj"></param>
         /// <param name="isReturnDefaultValue">是否返回默认值 ==》 【true: 返回默认值(null)】 【false: 抛出异常】<</param>
         /// <returns></returns>
-        public static string ToLitJson(this object obj, bool isReturnDefaultValue = true)
+        public static string ToLitJson(this object obj, bool isReturnDefaultValue = true, bool isWriteLog = false)
         {
             try
             {
@@ -362,6 +376,7 @@ namespace Taki.Common
             {
                 if (!isReturnDefaultValue)
                     throw new Exception("序列化 Json 失败", ex);
+                if (isWriteLog) LoggerFactory.Create()?.Error($"序列化 Json 失败", ex, 1);
             }
             return null;
         }
@@ -374,8 +389,9 @@ namespace Taki.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="json"></param>
         /// <param name="isReturnDefaultValue">是否返回默认值 ==》 【true: 返回默认值 一般情况为 null】 【false: 抛出异常】</param>
+        /// <param name="isWriteLog">转换失败是否需要写入日志【默认不写日志】</param>
         /// <returns></returns>
-        public static T ToObject<T>(this string json, bool isReturnDefaultValue = true)
+        public static T ToObject<T>(this string json, bool isReturnDefaultValue = true, bool isWriteLog = false)
         {
             try
             {
@@ -385,6 +401,7 @@ namespace Taki.Common
             {
                 if (!isReturnDefaultValue)
                     throw new Exception("反序列化 Json 失败", ex);
+                if (isWriteLog) LoggerFactory.Create()?.Error($"反序列化 Json 失败", ex, 1);
             }
             return default(T);
         }
@@ -395,8 +412,9 @@ namespace Taki.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="json"></param>
         /// <param name="isReturnDefaultValue">是否返回默认值 ==》 【true: 返回默认值 一般情况为 null】 【false: 抛出异常】</param>
+        /// <param name="isWriteLog">转换失败是否需要写入日志【默认不写日志】</param>
         /// <returns></returns>
-        public static T ToLitObject<T>(this string json, bool isReturnDefaultValue = true)
+        public static T ToLitObject<T>(this string json, bool isReturnDefaultValue = true, bool isWriteLog = false)
         {
             try
             {
@@ -406,6 +424,7 @@ namespace Taki.Common
             {
                 if (!isReturnDefaultValue)
                     throw new Exception("反序列化 Json 失败", ex);
+                if (isWriteLog) LoggerFactory.Create()?.Error($"反序列化 Json 失败", ex, 1);
             }
             return default(T);
         }
@@ -422,11 +441,13 @@ namespace Taki.Common
         /// <returns></returns>
         public static bool IsMatch(this string s, string pattern)
         {
-            if (s == null) return false;
-            else return System.Text.RegularExpressions.Regex.IsMatch(s, pattern);
+            if (s == null)
+                return false;
+            else
+                return Regex.IsMatch(s, pattern);
         }
         /// <summary>
-        /// 匹配正则
+        /// 匹配第一个符合正则的字符串
         /// 示例：
         ///     string s = "ldp615".Match("[a-zA-Z]+");
         /// </summary>
@@ -435,9 +456,44 @@ namespace Taki.Common
         /// <returns></returns>
         public static string Match(this string s, string pattern)
         {
-            if (s == null) return "";
-            return System.Text.RegularExpressions.Regex.Match(s, pattern).Value;
+            if (s == null)
+                return "";
+            return
+                Regex.Match(s, pattern).Value;
         }
+
+        /// <summary>
+        /// 匹配所有符合正则的字符串
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public static IList<string> Matches(this string s, string pattern)
+        {
+            if (s == null)
+                return null;
+            else
+                return Regex.Matches(s, pattern).ToList();
+        }
+
+        /// <summary>
+        /// 循环 MatchCollection 子项
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static IList<string> ToList(this MatchCollection s)
+        {
+            var results = new List<string>();
+            if (s != null && s.Count > 0)
+            {
+                foreach (Match item in s)
+                {
+                    results.Add(item.Value);
+                }
+            }
+            return results;
+        }
+
         #endregion
 
         #region byte 操作
@@ -542,13 +598,14 @@ namespace Taki.Common
 
         #region List扩展
 
-        public static bool IsNotNull<T>(this IList<T> s)
+        public static bool IsEmpty<T>(this IEnumerable<T> s)
         {
-            if (s != null && s.Count() > 0)
-            {
-                return true;
-            }
-            return false;
+            return !s.Any();
+        }
+
+        public static bool IsNotEmpty<T>(this IEnumerable<T> s)
+        {
+            return s.Any();
         }
 
         public static T Next<T>(this IList<T> list, int index)
@@ -647,7 +704,7 @@ namespace Taki.Common
             {
                 if (toLower) { str.ToLower(); }
                 string[] ss = str.Split(speater);
-                if (ss.IsNotNull())
+                if (ss.IsNotEmpty())
                 {
                     list = ss.ToList();
                 }
@@ -673,7 +730,7 @@ namespace Taki.Common
         /// <returns> 如果 list 为空 返回null</returns>
         public static string Join(this List<string> list, string speater)
         {
-            if (list.IsNotNull())
+            if (list.IsNotEmpty())
             {
                 return string.Join(speater, list);
             }

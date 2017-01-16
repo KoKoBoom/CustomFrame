@@ -181,7 +181,7 @@ namespace Taki.Common
         /// <summary>
         /// 写入文本文件 如果存在则覆盖
         /// </summary>
-        /// <param name="fileAbsolutePath">文件绝对路径</param>
+        /// <param name="fileAbsolutePath"></param>
         /// <param name="contents">文件内容</param>
         /// <param name="fileAttributes">文件属性 可设置隐藏  显示等等</param>
         public static void WriteTextFile(string fileAbsolutePath, string contents, FileAttributes fileAttributes = FileAttributes.Normal)
@@ -222,22 +222,22 @@ namespace Taki.Common
 
         #region 检查目录是否存在 不存在则创建
         /// <summary>
-        /// 检查目录是否存在 不存在则创建
+        /// 检查目录是否存在 不存在则创建 (注意 目录必须以 “\\” 结尾 并且不能为根目录 如 C:\\)
         /// </summary>
         /// <param name="directoryOrPath">目录或者路径（可包含文件名，本方法会忽略文件）</param>
         private static void CreateNonExistsDirectory(string directoryOrPath)
         {
             var directory = Path.GetDirectoryName(directoryOrPath);
-            if (!Directory.Exists(directory))//若文件夹不存在则新建文件夹  
+            if (directory != null && !Directory.Exists(directory))
             {
-                Directory.CreateDirectory(directory); //新建文件夹  
+                Directory.CreateDirectory(directory);
             }
         }
         #endregion
 
         #region MP3 转 WAV
         /// <summary>
-        /// MP3 转 WAV
+        /// MP3 转 WAV  不支持网络 URI 路径
         /// </summary>
         /// <param name="mp3filePath"></param>
         /// <param name="wavfilePath"></param>
@@ -261,7 +261,7 @@ namespace Taki.Common
         /// </summary>
         /// <param name="oldFileName"></param>
         /// <param name="oldFileAbsolutePath"></param>
-        /// <param name="newFileDirectory"></param>
+        /// <param name="newFileAbsolutePath"></param>
         /// <returns>复制后的文件的绝对路径</returns>
         public static void CopyFileToNewPath(string oldFileAbsolutePath, string newFileAbsolutePath, bool throwException = false)
         {
