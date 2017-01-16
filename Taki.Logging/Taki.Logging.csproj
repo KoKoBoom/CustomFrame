@@ -56,14 +56,19 @@
   <ItemGroup>
     <Compile Include="Base\ILogger.cs" />
     <Compile Include="Base\ILoggerFactory.cs" />
+    <Compile Include="Common\StackTraceLinkedList.cs" />
     <Compile Include="Extend\log4net\Logger4Factory.cs" />
     <Compile Include="Extend\log4net\Logger4Helper.cs" />
     <Compile Include="Base\LoggerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Extend\log4net\log4net_html.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Extend\log4net\log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Extend\log4net\log4net1.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

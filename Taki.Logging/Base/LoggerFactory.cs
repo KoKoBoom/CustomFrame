@@ -45,8 +45,8 @@ namespace Taki.Logging
                 if (_currentLogFactory == null) { DefaultConfig(); }
                 return _currentLogFactory.Create();
             }
-            catch (Exception) { }
-            return new Logger4Helper(); //按照可扩展规则，本来这里不能出现特定的实例，但是为了解决 LoggerFactory.Create()?.Error(ex); 当 LoggerFactory.Create() 为空时，那就成了null.Error(ex) 会报异常，所以这里就默认返回Log4net的实例。当然LoggerFactory.Create()?.Error(ex);可以解决问题，当时你不能保证每个人都这么写。而且 ?. 必须4.5以上版本 C#6.0 的语法
+            catch (Exception ex) { }
+            return new Logger4Helper(); //按照可扩展规则，本来这里不能出现特定的实例，但是为了解决 LoggerFactory.Create()?.Error(ex); 当 LoggerFactory.Create() 为空时，那就成了null.Error(ex) 会报异常，所以这里就默认返回Log4net的实例。当然LoggerFactory.Create()?.Error(ex);可以解决问题，但不能保证每个人都这么写。而且 ?. 必须4.5以上版本 C#6.0 的语法
         }
 
         /// <summary>
