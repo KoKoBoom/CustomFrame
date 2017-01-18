@@ -9,10 +9,15 @@
         $(function () {
             $("h2").on("click", function () {
                 $.get("/Home/GetData/1?a=" + new Date().toLocaleTimeString(), function (result) {
-                    if (result.OK = "OK") {
-                        alert(result.StrDateTime);
+                    debugger;
+                    throw 0 / 0;
+                    if (result.State == "SUCCESS") {
+                        alert(new RegExp(/^\d*$/).test("0"));
+                        alert(result.Data.StrDateTime);
+                    } else {
+                        alert(result.Message);
                     }
-                }).error(function () { alert(); });
+                });
             });
         });
 

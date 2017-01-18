@@ -68,7 +68,7 @@ namespace Taki.Common
         public void Send(string subject, string body)
         {
 
-            List<string> toList = to.ToDBC().SplitArray(',');
+            List<string> toList = Extensions.Split(to.ToDBC(), ',');
             OpenSmtp.Mail.Smtp smtp = new OpenSmtp.Mail.Smtp(smtpServer, userName, pwd, smtpPort);
             foreach (string s in toList)
             {

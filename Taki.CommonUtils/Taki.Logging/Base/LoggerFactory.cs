@@ -9,8 +9,7 @@ using System;
 namespace Taki.Logging
 {
     /// <summary>
-    /// 本类库已经对于本类库中所有可能出现的异常做出了处理， LoggerFactory.Create() 在一般情况下不可能出现异常。
-    /// 如果还不放心，建议使用C# 6.0 语法 即 LoggerFactory.Create() ?. Error(ex); 绝对保证本条代码的安全性，绝不会出任何异常。
+    /// 建议使用C# 6.0 语法 即 LoggerFactory.Create() ?. Error(ex); 
     /// </summary>
     public class LoggerFactory
     {
@@ -34,8 +33,6 @@ namespace Taki.Logging
         /// <summary>
         ///  创建指定配置文件指定的继承了 ILogger 的实例
         ///  默认创建 Log4net 的实例
-        ///  本类库已经对于本类库中所有可能出现的异常做出了处理， LoggerFactory.Create() 在一般情况下不可能出现异常。
-        ///  如果还不放心，建议使用C# 6.0 语法 即 LoggerFactory.Create() ?. Error(ex); 绝对保证本条代码的安全性，绝不会出任何异常。
         /// </summary>
         /// <returns> Created ILog </returns>
         public static ILogger Create()

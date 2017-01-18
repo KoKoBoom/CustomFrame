@@ -16,16 +16,17 @@ namespace Taki.Web.Controllers.Home
             return View();
         }
 
-        public JsonResult GetData(string id)
+        public ContentResult GetData(string id)
         {
-            //Thread thread1 = new Thread(() =>
-            //{
-            //    for (var i = 0; i < 10; i++)
-            "fsd".GetToDayBeginDateTime("fd",true);
-            //});
-            //thread1.Start();
-            var strDate = "2016-11-16 17:23:50";
-            return Json(new { OK = "OK", StrDateTime = strDate.GetToDayEndDateTime() }, JsonRequestBehavior.AllowGet);
+            var strDate = "2016-11-16 17:23:50d";
+            strDate.GetToDayBeginDateTime(false);
+            var result = new OperationResult<dynamic>
+            {
+                //PageDataCount = 21,
+                //State = EmOperationState.SUCCESS,
+                //Data = new { StrDateTime = strDate.GetToDayEndDateTime() }
+            }.ToJson();
+            return Content(result);
         }
     }
 }

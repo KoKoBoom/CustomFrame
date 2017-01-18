@@ -39,7 +39,7 @@ namespace Taki.Common
                 }
                 else if (!isReturnDefault)
                 {
-                    throw new FormatException();
+                    throw new ArgumentNullException();
                 }
             }
             catch (Exception) { if (!isReturnDefault) { throw; } }
@@ -51,10 +51,10 @@ namespace Taki.Common
         /// </summary>
         /// <typeparam name="T">转换目标类型</typeparam>
         /// <param name="value">需要转换的值</param>
-        /// <param name="defaultValue">转换失败时的默认值</param>
-        /// <param name="ifExceptionReturnDefault">请输入true ，这个参数完全是为了区别重载，没有任何用处。</param>
+        /// <param name="defaultValue">转换失败时的默认值 当此值的类型为bool类型时，isReturnDefault必须赋值</param>
+        /// <param name="isReturnDefault">true:如果异常则返回默认的（T）的值，false:抛出异常</param>
         /// <returns>T</returns>
-        public static T To<T>(this object value, T defaultValue, bool ifExceptionReturnDefault)
+        public static T To<T>(this object value, T defaultValue, bool isReturnDefault = true)
         {
             try
             {
@@ -62,8 +62,12 @@ namespace Taki.Common
                 {
                     defaultValue = (T)Convert.ChangeType(value, typeof(T));
                 }
+                else if (!isReturnDefault)
+                {
+                    throw new ArgumentNullException();
+                }
             }
-            catch (Exception) { }
+            catch (Exception) { if (!isReturnDefault) { throw; } }
             return defaultValue;
         }
 
@@ -97,7 +101,7 @@ namespace Taki.Common
             var defaultValue = new DateTime(1970, 01, 01, 00, 00, 00);
             try
             {
-                var _dateTime = dateTime.To<DateTime>(defaultValue, true);
+                var _dateTime = dateTime.To<DateTime>(defaultValue, isReturnDefault);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 0, 0, 0);
             }
             catch (Exception) { if (!isReturnDefault) throw; }
@@ -168,7 +172,7 @@ namespace Taki.Common
             var defaultValue = new DateTime(9999, 12, 31, 23, 59, 59);    //这里可以用 DateTime.MaxValue ，但是MaxValue将来肯能会改成其他值，具有不确定性。
             try
             {
-                var _dateTime = dateTime.To<DateTime>(defaultValue, true);
+                var _dateTime = dateTime.To<DateTime>(defaultValue, isReturnDefault);
                 return new DateTime(_dateTime.Year, _dateTime.Month, _dateTime.Day, 23, 59, 59);
             }
             catch (Exception) { if (!isReturnDefault) throw; }
@@ -330,6 +334,28 @@ namespace Taki.Common
         public static bool IsNotNullAndWhiteSpace(this string s)
         {
             return !string.IsNullOrWhiteSpace(s);
+        }
+        #endregion
+
+        #region WhenNullThenDefault WhenNullWhiteSpaceThenDefault
+        /// <summary>
+        /// 当字符串为Null时返回string.Empty，其它情况返回自己本身
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string WhenNullThenDefault(this string s)
+        {
+            return s ?? string.Empty;
+        }
+
+        /// <summary>
+        /// 当字符串为Null、""、或者 "   " (空白) 时返回string.Empty，其它情况返回自己本身
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string WhenNullWhiteSpaceThenDefault(this string s)
+        {
+            return string.IsNullOrWhiteSpace(s) == true ? "" : s;
         }
         #endregion
 
@@ -512,23 +538,21 @@ namespace Taki.Common
 
         #region 尝试将键和值添加到字典中：如果不存在，才添加；存在，不添加也不抛导常
         /// <summary>
-        /// 尝试将键和值添加到字典中：如果不存在，才添加；存在，不添加也不抛导常
+        /// 尝试将键和值添加到字典中：如果【不存在，才添加】；【存在，不添加】也不抛导常
         /// </summary>
-        public static Dictionary<TKey, TValue> TryAdd<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue value)
+        public static void TryAdd<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue value)
         {
             if (dict.ContainsKey(key) == false) dict.Add(key, value);
-            return dict;
         }
         #endregion
 
         #region 将键和值添加或替换到字典中：如果不存在，则添加；存在，则替换
         /// <summary>
-        /// 将键和值添加或替换到字典中：如果不存在，则添加；存在，则替换
+        /// 将键和值添加或替换到字典中：如果【不存在，则添加】；【存在，则替换】
         /// </summary>
-        public static Dictionary<TKey, TValue> AddOrReplace<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue value)
+        public static void AddOrReplace<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue value)
         {
             dict[key] = value;
-            return dict;
         }
         #endregion
 
@@ -538,14 +562,13 @@ namespace Taki.Common
         /// 没有考虑线程安全 ConcurrentDictionary
         /// </summary>
         /// <param name="replaceExisted">如果已存在，是否替换</param>
-        public static Dictionary<TKey, TValue> AddRange<TKey, TValue>(this Dictionary<TKey, TValue> dict, IEnumerable<KeyValuePair<TKey, TValue>> values, bool replaceExisted)
+        public static void AddRange<TKey, TValue>(this Dictionary<TKey, TValue> dict, IEnumerable<KeyValuePair<TKey, TValue>> values, bool replaceExisted)
         {
-            foreach (var item in values)
+            foreach (var item in values.WhenNullThenDefault())
             {
                 if (dict.ContainsKey(item.Key) == false || replaceExisted)
                     dict[item.Key] = item.Value;
             }
-            return dict;
         }
         #endregion
 
@@ -598,16 +621,72 @@ namespace Taki.Common
 
         #region List扩展
 
-        public static bool IsEmpty<T>(this IEnumerable<T> s)
+        #region 检查是否为空  不检查集合数量
+        /// <summary>
+        /// 检查是否为空  不检查集合数量
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsNull<T>(this IEnumerable<T> s)
         {
-            return !s.Any();
+            return s == null;
         }
+        #endregion
 
-        public static bool IsNotEmpty<T>(this IEnumerable<T> s)
+        #region 如果为空则返回一个数量为0的List<T>  一般用于 foreach  例如 foreach(var item in list.WhenNullThenDefault())
+        /// <summary>
+        /// 如果为空则返回一个数量为0的List[T]   一般用于 foreach  例如 foreach(var item in list.WhenNullThenDefault())
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> WhenNullThenDefault<T>(this IEnumerable<T> s)
         {
-            return s.Any();
+            return s == null ? new List<T>(0) : s;
         }
+        #endregion
 
+        #region 检查集合不为空 不检查子项个数
+        /// <summary>
+        /// 不为空 不检查子项个数
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsNotNull<T>(this IEnumerable<T> s)
+        {
+            return s != null;
+        }
+        #endregion
+
+        #region 集合为空或者子项个数为0
+        /// <summary>
+        /// 集合为空或者子项个数为0
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> s)
+        {
+            return s == null || !s.Any();
+        }
+        #endregion
+
+        #region 集合不为空 且存在子项
+        /// <summary>
+        /// 集合不为空 且存在子项
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsNotNullAndEmpty<T>(this IEnumerable<T> s)
+        {
+            return s != null && s.Any();
+        }
+        #endregion
+
+        #region 扩展
         public static T Next<T>(this IList<T> list, int index)
         {
             if (list != null)
@@ -645,14 +724,13 @@ namespace Taki.Common
         {
             try
             {
-                if (list != null && list.Count() > 0)
+                if (list.IsNotNullAndEmpty())
                 {
-                    var result = list[defaultIndex];
                     if (index + 1 < list.Count)
                     {
                         return list[index + 1];
                     }
-                    return result;
+                    return list[defaultIndex];
                 }
                 return default(T);
             }
@@ -672,21 +750,22 @@ namespace Taki.Common
         {
             try
             {
-                if (list != null && list.Count() > 0)
+                if (list.IsNotNullAndEmpty())
                 {
-                    var result = list[defaultIndex];
                     var index = list.IndexOf(item);
                     if (index + 1 < list.Count)
                     {
                         return list[index + 1];
                     }
-                    return result;
+                    return list[defaultIndex];
                 }
                 return default(T);
             }
             catch (Exception ex) { }
             return default(T);
         }
+        #endregion
+
         #endregion
 
         #region 切分
@@ -697,14 +776,14 @@ namespace Taki.Common
         /// <param name="speater"></param>
         /// <param name="toLower"></param>
         /// <returns></returns>
-        public static List<string> SplitArray(this string str, char speater, bool toLower = false)
+        public static List<string> Split(this string str, char speater, bool toLower = false)
         {
             List<string> list = new List<string>();
             if (str.IsNotNullAndWhiteSpace() && speater != Char.MinValue)
             {
                 if (toLower) { str.ToLower(); }
                 string[] ss = str.Split(speater);
-                if (ss.IsNotEmpty())
+                if (ss.IsNotNullAndEmpty())
                 {
                     list = ss.ToList();
                 }
@@ -713,28 +792,28 @@ namespace Taki.Common
         }
 
         /// <summary>
-        /// 切分，默认切分 “，”
+        /// 切分，默认按“,”切分   如果 str == null  则返回 null
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string[] SplitArray(this string str)
+        public static string[] Split(this string str)
         {
-            return str.Split(new char[',']);
+            if (str != null)
+            {
+                return str.Split(new char[',']);
+            }
+            return null;
         }
 
         /// <summary>
-        /// 按 speater 连接成字符串 如果 list 为空 返回null
+        /// 按 speater 连接成字符串   如果 list 为空 则返回 ""
         /// </summary>
         /// <param name="list"></param>
         /// <param name="speater"></param>
         /// <returns> 如果 list 为空 返回null</returns>
         public static string Join(this List<string> list, string speater)
         {
-            if (list.IsNotEmpty())
-            {
-                return string.Join(speater, list);
-            }
-            return null;
+            return string.Join(speater, list.WhenNullThenDefault());
         }
         #endregion
 
@@ -745,7 +824,7 @@ namespace Taki.Common
         /// </summary>
         public static string TrimEnd(this string str)
         {
-            return str.TrimEnd(',');
+            return str.WhenNullThenDefault().TrimEnd(',');
         }
 
         /// <summary>
@@ -759,6 +838,103 @@ namespace Taki.Common
             return str;
         }
         #endregion
+
+    }
+
+    /// <summary>
+    /// 正则集合
+    /// </summary>
+    public class Regexs
+    {
+        /// <summary>
+        /// 整数
+        /// </summary>
+        public const string Intege = @"^-?\d*$";
+        /// <summary>
+        /// 正整数
+        /// </summary>
+        public const string UIntege = @"^[1-9]\d*$";
+        /// <summary>
+        /// 负整数
+        /// </summary>
+        public const string NegateIntege = @"^-[1-9]\d*$";
+        /// <summary>
+        /// 数字
+        /// </summary>
+        public const string Num = @"^([+-]?)\d*$";
+        /// <summary>
+        /// 浮点数 不包括 0
+        /// </summary>
+        public const string Decmal = @"^([+-]?)\d*\.\d+$";
+        /// <summary>
+        /// 正浮点数
+        /// </summary>
+        public const string UDecmal = @"^[1-9]\d*.\d*|0.\d*[1-9]\d*$";
+        /// <summary>
+        /// 负浮点数
+        /// </summary>
+        public const string NegateDecmal = @"^-([1-9]\d*.\d*|0.\d*[1-9]\d*)$";
+        /// <summary>
+        /// 浮点数 包括 0
+        /// </summary>
+        public const string DecmalWithZero = @"^-?([1-9]\d*.\d*|0.\d*[1-9]\d*|0?.0+|0)$";
+        /// <summary>
+        /// 非负浮点数（正浮点数 + 0）
+        /// </summary>
+        public const string UDecmalWithZero = @"^[1-9]\d*|0$.\d*|0.\d*[1-9]\d*|0?.0+|0$";
+        /// <summary>
+        /// 非正浮点数（负浮点数 + 0）
+        /// </summary>
+        public const string NegateDecmalWithZero = @"^(-([1-9]\d*.\d*|0.\d*[1-9]\d*))|0?.0+|0$";
+        /// <summary>
+        /// 邮件
+        /// </summary>
+        public const string Email = @"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f] |\[\x01-\x09\x0b\x0c\x0e-\x7f])*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])";
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public const string Url = @"^http[s]?:\/\/([\w-]+\.)+[\w-]+([\w-./?%&=]*)?$";
+        /// <summary>
+        /// 中文
+        /// </summary>
+        public const string Chinese = @"^[\u4E00-\u9FA5\uF900-\uFA2D]+$";
+        /// <summary>
+        /// ACSII字符
+        /// </summary>
+        public const string Ascii = @"^[\x00-\xFF]+$";
+        /// <summary>
+        /// 邮编
+        /// </summary>
+        public const string ZipCode = @"^\d{6}$";
+        /// <summary>
+        /// 手机 （截止到2015年最新）
+        /// 手机号码:
+        ///     13[0-9], 14[5,7], 15[0, 1, 2, 3, 5, 6, 7, 8, 9], 17[6, 7, 8], 18[0-9], 170[0-9] 
+        ///     移动号段: 134,135,136,137,138,139,150,151,152,157,158,159,182,183,184,187,188,147,178,1705 
+        ///     联通号段: 130,131,132,155,156,185,186,145,176,1709 
+        ///     电信号段: 133,153,180,181,189,177,1700 
+        /// </summary>
+        public const string Mobile = @"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$";
+        /// <summary>
+        /// IP4
+        /// </summary>
+        public const string IP4 = @"^(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)$";
+        /// <summary>
+        /// 图片
+        /// </summary>
+        public const string Picture = @"(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$";
+        /// <summary>
+        /// 压缩文件
+        /// </summary>
+        public const string RAR = @"(.*)\.(rar|zip|7zip|tgz)$";
+        /// <summary>
+        /// 日期
+        /// </summary>
+        public const string Date = @"^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$";
+        /// <summary>
+        /// 中国身份证
+        /// </summary>
+        public const string ChinaID = @"(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}[0-9xX]$)";
 
     }
 }
