@@ -1,4 +1,11 @@
-﻿using System;
+﻿/********************************************************************************
+** Auth：	Taki
+** Mail:	mister_zheng@sina.com
+** Date：	2017/1/11 10:19:10
+** Desc：	常用函数扩展
+*********************************************************************************/
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;

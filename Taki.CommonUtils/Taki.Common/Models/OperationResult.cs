@@ -50,11 +50,6 @@ namespace Taki.Common
         /// </summary>
         public string Message { get; set; } = "似乎出现一些问题";
         public T Data { get; set; }
-
-        public int PageSize { get; set; } = 10;
-        public int PageIndex { get; set; } = 1;
-        public int PageMaxIndex { get { return Math.Ceiling(PageDataCount.To<decimal>(1, true) / PageSize.To<decimal>(1, true)).To<int>(1, true); } }
-        public int PageDataCount { get; set; } = 1;
     }
 
     public enum EmOperationState

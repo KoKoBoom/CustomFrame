@@ -8,11 +8,8 @@
     <script>
         $(function () {
             $("h2").on("click", function () {
-                $.get("/Home/GetData/1?a=" + new Date().toLocaleTimeString(), function (result) {
-                    debugger;
-                    throw 0 / 0;
+                $.get("/Home/GetPagingData?id=1&pageIndex=2&pageSize=20", function (result) {
                     if (result.State == "SUCCESS") {
-                        alert(new RegExp(/^\d*$/).test("0"));
                         alert(result.Data.StrDateTime);
                     } else {
                         alert(result.Message);

@@ -9,8 +9,8 @@ namespace Taki.Web.Filters
     {
         public ExceptionHanlder(ExceptionContext filterContext)
         {
-            //LoggerFactory.Create()?.Error(filterContext.Exception.Message, filterContext.Exception.TargetSite.DeclaringType.ToString() + "." + filterContext.RouteData.Values["action"].ToString());
-            LoggerFactory.Create()?.Error(filterContext.Exception, 1);
+            LoggerFactory.Create()?.Error("/" + filterContext.Exception.Message, filterContext.RouteData.Values["controller"].ToString() + "/" + filterContext.RouteData.Values["action"].ToString());
+            //LoggerFactory.Create()?.Error(filterContext.Exception, 1);
 
             if (!filterContext.HttpContext.Request.IsAjaxRequest())
                 return;

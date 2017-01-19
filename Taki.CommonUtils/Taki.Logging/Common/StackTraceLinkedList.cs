@@ -26,10 +26,10 @@ namespace Taki.Logging
                 }
                 var fileName = st.GetFileName();
                 var lineNumber = st.GetFileLineNumber();
-                if (lineNumber == 0)
-                {
-                    break;
-                }
+                //if (lineNumber == 0)
+                //{
+                //    break;
+                //}
                 var method = st.GetMethod();
                 var fullName = string.Format("{0}.{1}({2})", method.ReflectedType.FullName, method.Name, string.Join(",", method.GetParameters().Select(o => string.Format("{0} {1}", o.ParameterType.ToString().Split('.').LastOrDefault(), o.Name)).ToArray()));
                 listInfo.Add(String.Format("\r\t在{0} 位置{1} 行号：{2}", fullName, fileName, lineNumber));
