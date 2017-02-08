@@ -3,21 +3,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2 id="test">{{message}}</h2>
 @section scripts{
     <script>
-        $(function () {
-            $("h2").on("click", function () {
-                $.get("/Home/GetPagingData?id=1&pageIndex=2&pageSize=20", function (result) {
-                    if (result.State == "SUCCESS") {
-                        alert(result.Data.StrDateTime);
-                    } else {
-                        alert(result.Message);
-                    }
+        var vm = new Vue({
+            el: "#test",
+            data: {
+                message: "Hello World"
+            }
+        })
+    </script>
+    @*<script>
+            $(function () {
+                $("h2").on("click", function () {
+                    $.get("/Home/GetPagingData?id=1&pageIndex=2&pageSize=20", function (result) {
+                        if (result.State == "SUCCESS") {
+                            alert(result.Data.StrDateTime);
+                        } else {
+                            alert(result.Message);
+                        }
+                    });
                 });
             });
-        });
 
-    </script>
+        </script>*@
 
 }
