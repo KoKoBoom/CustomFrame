@@ -38,6 +38,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,34 +48,63 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Taki.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Taki.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Taki.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Taki.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Taki.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Taki.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Taki.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Taki.cs</LastGenOutput>
-    </Content>
+    <Compile Include="role.cs">
+      <DependentUpon>TakiDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="rolemenu.cs">
+      <DependentUpon>TakiDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysmenu.cs">
+      <DependentUpon>TakiDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TakiDatabase.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TakiDatabase.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TakiDatabase.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TakiDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TakiDatabase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TakiDatabase.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="user.cs">
+      <DependentUpon>TakiDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="userrole.cs">
+      <DependentUpon>TakiDatabase.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EntityDeploy Include="TakiDatabase.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TakiDatabase.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="TakiDatabase.edmx.diagram">
+      <DependentUpon>TakiDatabase.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TakiDatabase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TakiDatabase.edmx</DependentUpon>
+      <LastGenOutput>TakiDatabase.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="TakiDatabase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TakiDatabase.edmx</DependentUpon>
+      <LastGenOutput>TakiDatabase.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
