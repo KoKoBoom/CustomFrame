@@ -154,8 +154,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\gb.jpg" />
     <Content Include="Content\Images\bg.png" />
+    <Content Include="Content\Images\loginBg.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\testvue.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\Scripts\bootstrap.js" />
     <Content Include="Content\Scripts\bootstrap.min.js" />
@@ -177,9 +179,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BaseRulelessController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
-    <Compile Include="Controllers\Home\Manager.cs" />
+    <Compile Include="Controllers\Home\ManageController.cs" />
     <Compile Include="Controllers\Home\TestExceptionController.cs" />
     <Compile Include="Filters\AjaxExceptionAttribute.cs" />
     <Compile Include="Filters\ExceptionHanlder.cs" />
@@ -203,6 +206,10 @@
     <Content Include="Content\Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Shared\_LayoutRuleless.cshtml" />
+    <Content Include="Views\Home\View.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -213,6 +220,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\BaseRuleless\" />
     <Folder Include="Views\TestException\" />
   </ItemGroup>
   <ItemGroup>

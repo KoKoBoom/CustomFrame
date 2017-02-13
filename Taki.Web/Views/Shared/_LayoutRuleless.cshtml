@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="~/Content/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/Scripts/customJS/ajaxConfig.js"></script>
+    <style>
+        .background-pic {
+            /*background-image: url('../../Content/Images/gb.jpg');
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;*/
+            background-image: url('../../Content/Images/bg.png');
+        }
+    </style>
+</head>
+<body class="background-pic">
+    @RenderBody()
+</body>
+</html>

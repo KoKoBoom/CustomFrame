@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "登录";
+    Layout = "~/Views/Shared/_LayoutRuleless.cshtml";
+}
+<div style="position:relative; margin:150px 0px 20px 0px; padding-left:30px; width:100%; text-align:center;"><img src="~/Content/Images/loginBg.png" style="margin:0px; padding:0px; border:0px;" /></div>
+
+<el-form id="form1" v-bind:model="ruleForm" v-bind:rules="rules" ref="ruleForm" label-width="80px" style="width:400px; margin:0 auto;">
+    <el-form-item label="用户名" prop="Name">
+        <el-input v-model="ruleForm.Name" v-on:keyup.enter="submitForm"></el-input>
+    </el-form-item>
+    <el-form-item label="密码" prop="Password">
+        <el-input v-model="ruleForm.Password" type="password" v-on:keyup.enter="submitForm"></el-input>
+    </el-form-item>
+    <el-form-item label="记住我">
+        <el-switch on-text="" off-text="" v-model="ruleForm.SaveCookie"></el-switch>
+    </el-form-item>
+    <el-form-item>
+        <el-button type="primary" size="large" v-on:click="onSubmit()" style="width:100%;">登录</el-button>
+    </el-form-item>
+</el-form>
+
+
+<script>
+    var ruleForm = new Vue({
+        el: "#form1",
+        data: {
+            ruleForm: {
+                Name: "",
+                Password: "",
+                SaveCookie: false
+            },
+            rules: {
+                Name: [
+                    { required: true, message: "请输入用户名" },
+                    { min: 4, max: 20, message: "用户名长度在4-20个字符" }
+                ],
+                Password: [
+                    { required: true, message: "请输入密码" },
+                    { min: 4, max: 16, message: "密码长度在4-16个字符" }
+                ]
+            }
+        },
+        methods: {
+            onSubmit() {
+                var _this = this;
+                _this.$refs["ruleForm"].validate((valid) => {
+                    if (valid) {
+                        //$.post("/Home/LoginIn", JSON.stringify(ruleForm.ruleForm), function (result) {
+                        //    _this.$message({
+                        //        message: result.Message
+                        //    })
+                        //    if (result.State == "SUCCESS") {
+                        //        _this.resetForm();
+                        //    } else {
+                        //        //_this.$message({
+                        //        //    message: "模拟登录成功"
+                        //        //})
+                        //    }
+                        //})
+                        $.ajax({
+                            type: "POST",
+                            url: "/Home/LoginIn",
+                            data: JSON.stringify(ruleForm.ruleForm),
+                            success: function (result) {
+                                if (result.State == "SUCCESS") {
+                                    _this.resetForm();
+                                    location.href = "/Manage/Index";
+                                } else {
+                                    _this.$message({
+                                        message: result.Message,
+                                        type: 'warning'
+                                    })
+                                }
+                            },
+                            error: function (a, b) {
+                                _this.$message({
+                                    message: "请求发生错误",
+                                    type: 'error'
+                                })
+                            }
+                        });
+
+                    } else {
+                        _this.$notify.error({
+                            title: "错误",
+                            message: "请按照提示输入正确的值"
+                        });
+                    }
+                });
+            },
+            resetForm() {
+                this.$refs["ruleForm"].resetFields();
+            },
+            submitForm() {
+                if (this.ruleForm.Name != "" && this.ruleForm.Password != "") {
+                    this.onSubmit();
+                }
+            }
+        }
+    });
+</script>

@@ -1,5 +1,4 @@
 ﻿using Taki.Common;
-using Taki.Web.Controllers.Base;
 using Taki.Web.Filters;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -11,8 +10,10 @@ using System;
 
 namespace Taki.Web.Controllers.Home
 {
-    public class HomeController : BaseController
+    public class HomeController : BaseRulelessController
     {
+        UserDAL dal = new UserDAL();
+
         // GET: Home
         public ActionResult Index()
         {
@@ -22,6 +23,55 @@ namespace Taki.Web.Controllers.Home
         public ActionResult Register()
         {
             return View();
+        }
+
+        public ActionResult Login()
+        {
+            var userModel = Session[GlobalParams.UserCookieKey] as user;
+
+            if (userModel == null || userModel.Name.IsNullOrWhiteSpace())
+            {
+                userModel = DataCache.GetCache(GlobalParams.UserCookieKey) as user;
+            }
+            if (userModel != null && userModel.Name.IsNotNullAndWhiteSpace())
+            {
+                Session[GlobalParams.UserCookieKey] = userModel;
+                return View("/Manage/Index");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LoginIn(string name, string password, bool? saveCookie)
+        {
+            OperationResult<user> result = new OperationResult<user>();
+            try
+            {
+                result = dal.LoginIn(name, password);
+
+                if (result.State == EmOperationState.SUCCESS)
+                {
+                    Session[GlobalParams.UserCookieKey] = result.Data;
+                    if (saveCookie.To<bool>(false, true))
+                    {
+                        DataCache.SetCache(GlobalParams.UserCookieKey, result.Data);
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                result.State = EmOperationState.ERROR;
+                Taki.Logging.LoggerFactory.Create().Error(ex);
+            }
+            return Json(result);
+        }
+
+        public void LoginOut()
+        {
+            Session[GlobalParams.UserCookieKey] = null;
+            DataCache.SetCache(GlobalParams.UserCookieKey, "", DateTime.UtcNow, TimeSpan.Zero);
+            Response.Redirect("/Home/Login");
         }
 
         [HttpPost]
