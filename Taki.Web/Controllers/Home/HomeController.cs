@@ -84,8 +84,7 @@ namespace Taki.Web.Controllers.Home
                 model.UserID = Guid.NewGuid().ToString();
                 model.CreateDate = DateTime.Now;
                 model.Status = 1;
-                result.Data = dal.Save(model);
-                result.State = result.Data ? EmOperationState.SUCCESS : EmOperationState.FAIL;
+                result = dal.Save(model);
             }
             catch (System.Exception ex)
             {

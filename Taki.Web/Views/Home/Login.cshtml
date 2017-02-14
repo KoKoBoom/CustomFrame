@@ -3,8 +3,7 @@
     ViewBag.Title = "登录";
     Layout = "~/Views/Shared/_LayoutRuleless.cshtml";
 }
-<div style="position:relative; margin:150px 0px 20px 0px; padding-left:30px; width:100%; text-align:center;"><img src="~/Content/Images/loginBg.png" style="margin:0px; padding:0px; border:0px;" /></div>
-
+<div style="margin:10% 0px 20px 0px; padding-left:30px; width:100%; text-align:center;"><img src="~/Content/Images/loginBg.png" style="margin:0px; padding:0px; border:0px;" /></div>
 <el-form id="form1" v-bind:model="ruleForm" v-bind:rules="rules" ref="ruleForm" label-width="80px" style="width:400px; margin:0 auto;">
     <el-form-item label="用户名" prop="Name">
         <el-input v-model="ruleForm.Name" v-on:keyup.enter="submitForm"></el-input>
@@ -18,8 +17,10 @@
     <el-form-item>
         <el-button type="primary" size="large" v-on:click="onSubmit()" style="width:100%;">登录</el-button>
     </el-form-item>
+    <el-form-item>
+        <el-button type="success" size="large" v-on:click="onSubmit()" style="width:100%;">注册</el-button>
+    </el-form-item>
 </el-form>
-
 
 <script>
     var ruleForm = new Vue({
@@ -46,40 +47,40 @@
                 var _this = this;
                 _this.$refs["ruleForm"].validate((valid) => {
                     if (valid) {
-                        //$.post("/Home/LoginIn", JSON.stringify(ruleForm.ruleForm), function (result) {
-                        //    _this.$message({
-                        //        message: result.Message
-                        //    })
-                        //    if (result.State == "SUCCESS") {
-                        //        _this.resetForm();
-                        //    } else {
-                        //        //_this.$message({
-                        //        //    message: "模拟登录成功"
-                        //        //})
-                        //    }
-                        //})
-                        $.ajax({
-                            type: "POST",
-                            url: "/Home/LoginIn",
-                            data: JSON.stringify(ruleForm.ruleForm),
-                            success: function (result) {
-                                if (result.State == "SUCCESS") {
-                                    _this.resetForm();
-                                    location.href = "/Manage/Index";
-                                } else {
-                                    _this.$message({
-                                        message: result.Message,
-                                        type: 'warning'
-                                    })
-                                }
-                            },
-                            error: function (a, b) {
+                        $.post("/Home/LoginIn", JSON.stringify(ruleForm.ruleForm), function (result) {
+                            if (result.State == "SUCCESS") {
+                                _this.resetForm();
+                                location.href = "/Manage/Index";
+                            } else {
                                 _this.$message({
-                                    message: "请求发生错误",
-                                    type: 'error'
+                                    message: result.Message,
+                                    type: 'warning'
                                 })
                             }
                         });
+                        //$.ajax({
+                        //    type: "POST",
+                        //    url: "/Home/LoginIn",
+                        //    //contentType: "application/json; charset=utf-8",
+                        //    data: JSON.stringify(ruleForm.ruleForm),
+                        //    success: function (result) {
+                        //        if (result.State == "SUCCESS") {
+                        //            _this.resetForm();
+                        //            location.href = "/Manage/Index";
+                        //        } else {
+                        //            _this.$message({
+                        //                message: result.Message,
+                        //                type: 'warning'
+                        //            })
+                        //        }
+                        //    },
+                        //    error: function (a, b) {
+                        //        _this.$message({
+                        //            message: "请求发生错误",
+                        //            type: 'error'
+                        //        })
+                        //    }
+                        //});
 
                     } else {
                         _this.$notify.error({

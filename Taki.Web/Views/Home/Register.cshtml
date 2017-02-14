@@ -82,7 +82,7 @@
                 ],
                 Password: [
                     { required: true, message: "请输入密码" },
-                    { min: 6, max: 16, message: "长度在6-16个字符" }
+                    { min: 4, max: 16, message: "长度在4-16个字符" }
                 ],
                 Nickname: [{ required: true, message: "请输入昵称" }],
                 Phone: [{ required: true, message: "请输入电话" }],
@@ -100,12 +100,21 @@
                 _this.$refs['ruleForm'].validate((valid) => {
                     if (valid) {
                         $.post("/Home/SaveRegister", JSON.stringify(form1.ruleForm), function (result) {
-                            _this.$message({
-                                message: result.Message,
-                                type: 'success'
-                            });
+                            
                             if (result.State == "SUCCESS")
+                            {
+                                _this.$message({
+                                    message: result.Message,
+                                    type: 'success'
+                                });
                                 _this.resetForm();
+                            }
+                            else {
+                                _this.$message({
+                                    message: result.Message,
+                                    type: 'error'
+                                });
+                            }
                         });
                     } else {
                         //_this.$message({ message: "请按照提示输入正确的值" });

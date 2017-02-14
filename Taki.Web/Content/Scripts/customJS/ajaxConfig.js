@@ -8,7 +8,7 @@
 jQuery.ajaxSetup({
     //type: 'POST',
     dataType: "json",
-    //contentType: "application/json; charset=utf-8",
+    contentType: "application/json; charset=utf-8",
     complete: function (xhr, status) {
         var sessionStatus = xhr.getResponseHeader('sessionstatus');
         if (sessionStatus == 'timeout') {

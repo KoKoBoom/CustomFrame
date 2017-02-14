@@ -16,13 +16,24 @@ namespace Taki.DAL
 {
     public class UserDAL
     {
-        public bool Save(user model)
+        public OperationResult<bool> Save(user model)
         {
+            OperationResult<bool> result = new OperationResult<bool>() { State = EmOperationState.FAIL };
             using (takiEntities _db = new takiEntities())
             {
-                _db.user.Add(model);
-                return _db.SaveChanges() > 0;
+                var _model = _db.user.Where(x => x.Name == model.Name);
+                if (_model != null && _model.Count() > 0)
+                {
+                    result.Message = "用户已存在";
+                }
+                else
+                {
+                    _db.user.Add(model);
+                    result.Data = _db.SaveChanges() > 0;
+                    result.State = result.Data ? EmOperationState.SUCCESS : EmOperationState.FAIL;
+                }
             }
+            return result;
         }
 
         public OperationResult<user> LoginIn(string name, string password)
