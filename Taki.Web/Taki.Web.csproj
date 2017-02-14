@@ -182,8 +182,9 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BaseRulelessController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
-    <Compile Include="Controllers\Home\ManageController.cs" />
+    <Compile Include="Controllers\Manage\ManageController.cs" />
     <Compile Include="Controllers\Home\TestExceptionController.cs" />
+    <Compile Include="Controllers\Manage\MenuController.cs" />
     <Compile Include="Filters\AjaxExceptionAttribute.cs" />
     <Compile Include="Filters\ExceptionHanlder.cs" />
     <Compile Include="Global.asax.cs">
@@ -221,6 +222,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\BaseRuleless\" />
+    <Folder Include="Views\Menu\" />
     <Folder Include="Views\TestException\" />
   </ItemGroup>
   <ItemGroup>

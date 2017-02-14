@@ -1,18 +1,18 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2017/2/12 23:02:39                           */
+/* Created on:     2017/2/15 1:06:15                            */
 /*==============================================================*/
 
 
 drop table if exists Role;
 
-drop table if exists RoleMenu;
-
-drop table if exists SysMenu;
+drop table if exists RolePurview;
 
 drop table if exists User;
 
 drop table if exists UserRole;
+
+drop table if exists purview;
 
 /*==============================================================*/
 /* Table: Role                                                  */
@@ -26,38 +26,20 @@ create table Role
    primary key (RoleID)
 );
 
-alter table Role comment '用户角色表';
+alter table Role comment '角色表';
 
 /*==============================================================*/
-/* Table: RoleMenu                                              */
+/* Table: RolePurview                                           */
 /*==============================================================*/
-create table RoleMenu
+create table RolePurview
 (
-   RoleMenuID           varchar(50) not null comment 'RoleMenuID',
+   RolePurviewID        varchar(50) not null comment 'RolePurviewID',
    RoleID               varchar(50) not null comment 'RoleID',
-   MenuID               varchar(50) not null comment 'MenuID',
-   Remark               varchar(255) comment '备注',
-   primary key (RoleMenuID)
+   PurviewID            varchar(50) not null comment 'PurviewID',
+   primary key (RolePurviewID)
 );
 
-alter table RoleMenu comment '角色菜单权限表';
-
-/*==============================================================*/
-/* Table: SysMenu                                               */
-/*==============================================================*/
-create table SysMenu
-(
-   MenuID               varchar(50) not null comment 'MenuID',
-   MenuName             varchar(50) not null comment '菜单名称',
-   MenuUrl              varchar(255) not null comment '菜单Url',
-   MenuIcon             varchar(255) comment '菜单图标',
-   MenuParentID         varchar(50) comment '菜单父级ID',
-   MenuOrder            varchar(50) not null comment '菜单顺序',
-   IsVisible            bool not null default false comment '是否显示菜单',
-   primary key (MenuID)
-);
-
-alter table SysMenu comment '菜单权限表';
+alter table RolePurview comment '角色权限表';
 
 /*==============================================================*/
 /* Table: User                                                  */
@@ -90,4 +72,21 @@ create table UserRole
 );
 
 alter table UserRole comment '用户角色关系表';
+
+/*==============================================================*/
+/* Table: purview                                               */
+/*==============================================================*/
+create table purview
+(
+   PurviewID            varchar(50) not null comment 'PurviewID',
+   PurviewName          varchar(50) not null comment '权限名称',
+   PurviewUrl           varchar(255) comment '权限Url',
+   PurviewIcon          varchar(255) not null comment '权限图标',
+   PPurviewID           varchar(50) comment '权限父级ID',
+   SequenceNO           varchar(50) comment '权限顺序',
+   PurviewType          varchar(50) comment '权限类别',
+   primary key (PurviewID)
+);
+
+alter table purview comment '权限';
 

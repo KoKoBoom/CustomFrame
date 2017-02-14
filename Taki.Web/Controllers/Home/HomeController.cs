@@ -27,17 +27,12 @@ namespace Taki.Web.Controllers.Home
 
         public ActionResult Login()
         {
-            var userModel = Session[GlobalParams.UserCookieKey] as user;
+            //var userModel = Session[GlobalParams.UserCookieKey] as user;
 
-            if (userModel == null || userModel.Name.IsNullOrWhiteSpace())
-            {
-                userModel = DataCache.GetCache(GlobalParams.UserCookieKey) as user;
-            }
-            if (userModel != null && userModel.Name.IsNotNullAndWhiteSpace())
-            {
-                Session[GlobalParams.UserCookieKey] = userModel;
-                return View("/Manage/Index");
-            }
+            //if (userModel != null && userModel.Name.IsNotNullAndWhiteSpace())
+            //{
+            //    return View("/Manage/Index");
+            //}
             return View();
         }
 

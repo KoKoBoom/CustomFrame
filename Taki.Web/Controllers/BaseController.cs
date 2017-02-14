@@ -19,6 +19,8 @@ namespace Taki.Web.Controllers
                 Response.Redirect("/Home/Login");
             }
 
+
+
             //LoggerFactory.Create()?.Info("OnActionExecuting", filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName + "." + filterContext.ActionDescriptor.ActionName);
             base.OnActionExecuting(filterContext);
         }

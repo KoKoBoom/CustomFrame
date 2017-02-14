@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Taki.Web.Controllers.Home
+namespace Taki.Web.Controllers.Manage
 {
-    public class ManageController : BaseController
+    public class MenuController : Controller
     {
-        // GET: Manage
+        // GET: Menu
         public ActionResult Index()
         {
             return View();

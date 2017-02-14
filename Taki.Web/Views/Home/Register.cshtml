@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_LayoutRuleless.cshtml";
 }
 <el-form id="form1" v-bind:model="ruleForm" v-bind:rules="rules" ref="ruleForm" label-width="80px" style="width:400px; margin:100px auto;">
-    <h1 style="text-align:center;">注册</h1>
+    <h1 style="text-align:center; color:#5cadff;">注 册</h1>
 
     <el-form-item label="昵称" prop="Nickname">
         <el-input v-model="ruleForm.Nickname"></el-input>
@@ -49,8 +49,8 @@
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
     </el-form-item>
     <el-form-item>
-        <el-button type="primary" v-on:click="onSubmit()">创建</el-button>
-        <el-button v-on:click="resetForm()">重置</el-button>
+        <el-button type="primary" v-on:click="onSubmit()"style="width:45%;">创 建</el-button>
+        <el-button v-on:click="resetForm()"style="width:45%;">重 置</el-button>
     </el-form-item>
 </el-form>
 

@@ -3,6 +3,20 @@
     ViewBag.Title = "登录";
     Layout = "~/Views/Shared/_LayoutRuleless.cshtml";
 }
+<style>
+    .reg {
+        color: #5cadff;
+        float: right;
+        text-decoration: none;
+        transition: color 1s;
+        font-size: 16px;
+    }
+
+        .reg:hover {
+            color: #ff6600;
+            transition: color 1s;
+        }
+</style>
 <div style="margin:10% 0px 20px 0px; padding-left:30px; width:100%; text-align:center;"><img src="~/Content/Images/loginBg.png" style="margin:0px; padding:0px; border:0px;" /></div>
 <el-form id="form1" v-bind:model="ruleForm" v-bind:rules="rules" ref="ruleForm" label-width="80px" style="width:400px; margin:0 auto;">
     <el-form-item label="用户名" prop="Name">
@@ -13,12 +27,10 @@
     </el-form-item>
     <el-form-item label="记住我">
         <el-switch on-text="" off-text="" v-model="ruleForm.SaveCookie"></el-switch>
+        <a href="/Home/Register" class="reg">注 册</a>
     </el-form-item>
-    <el-form-item>
-        <el-button type="primary" size="large" v-on:click="onSubmit()" style="width:100%;">登录</el-button>
-    </el-form-item>
-    <el-form-item>
-        <el-button type="success" size="large" v-on:click="onSubmit()" style="width:100%;">注册</el-button>
+    <el-form-item style="text-align:right;">
+        <el-button type="primary" size="large" v-on:click="onSubmit()" style="width:100%;">登 录</el-button>
     </el-form-item>
 </el-form>
 
@@ -27,8 +39,8 @@
         el: "#form1",
         data: {
             ruleForm: {
-                Name: "",
-                Password: "",
+                Name: "admin",
+                Password: "admin",
                 SaveCookie: false
             },
             rules: {
@@ -97,7 +109,11 @@
                 if (this.ruleForm.Name != "" && this.ruleForm.Password != "") {
                     this.onSubmit();
                 }
+            },
+            showRegister() {
+                location.href = '/Home/Register';
             }
         }
     });
+    ruleForm.onSubmit();
 </script>
