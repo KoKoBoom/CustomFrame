@@ -12,14 +12,14 @@ namespace Taki.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class sysmenu
+    public partial class purview
     {
-        public string MenuID { get; set; }
-        public string MenuName { get; set; }
-        public string MenuUrl { get; set; }
-        public string MenuIcon { get; set; }
-        public string MenuParentID { get; set; }
-        public string MenuOrder { get; set; }
-        public bool IsVisible { get; set; }
+        public string PurviewID { get; set; }
+        public string PurviewName { get; set; }
+        public string PurviewUrl { get; set; }
+        public string PurviewIcon { get; set; }
+        public string PPurviewID { get; set; }
+        public string SequenceNO { get; set; }
+        public string PurviewType { get; set; }
     }
 }

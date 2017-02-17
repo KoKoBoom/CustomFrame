@@ -18,10 +18,12 @@ namespace Taki.Model
         public string Name { get; set; }
         public string Password { get; set; }
         public string Nickname { get; set; }
-        public Nullable<int> Age { get; set; }
-        public long Sex { get; set; }
         public string Phone { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public Nullable<int> Status { get; set; }
+        public string Email { get; set; }
+        public long Sex { get; set; }
+        public Nullable<System.DateTime> Birthday { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public int Status { get; set; }
+        public bool IsAdministrator { get; set; }
     }
 }

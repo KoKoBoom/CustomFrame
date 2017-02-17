@@ -17,5 +17,6 @@ namespace Taki.Model
         public string RoleID { get; set; }
         public string RoleName { get; set; }
         public string RoleRemark { get; set; }
+        public string SeqNO { get; set; }
     }
 }

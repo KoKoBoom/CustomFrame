@@ -25,9 +25,6 @@
                       ]">
         <el-input v-model="ruleForm.Email"></el-input>
     </el-form-item>
-    <el-form-item label="年龄" prop="Age">
-        <el-input v-model.number="ruleForm.Age"></el-input>
-    </el-form-item>
     @*<el-form-item label="性别" prop="Sex">
             <el-select v-model="ruleForm.Sex" placeholder="请选择性别">
                 <el-option label="男" value="1"></el-option>
@@ -40,17 +37,17 @@
             <el-radio label="2">女</el-radio>
         </el-radio-group>
     </el-form-item>
-    <el-form-item label="生日" prop="birthday">
+    <el-form-item label="生日" prop="Birthday">
         <el-col v-bind:span="12">
-            <el-date-picker type="date" placeholder="选择生日" v-model="ruleForm.birthday" style="width: 100%;"></el-date-picker>
+            <el-date-picker type="date" placeholder="选择生日" v-model="ruleForm.Birthday" style="width: 100%;"></el-date-picker>
         </el-col>
     </el-form-item>
     <el-form-item label="备注">
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
     </el-form-item>
     <el-form-item>
-        <el-button type="primary" v-on:click="onSubmit()"style="width:45%;">创 建</el-button>
-        <el-button v-on:click="resetForm()"style="width:45%;">重 置</el-button>
+        <el-button type="primary" v-on:click="onSubmit()" style="width:45%;">创 建</el-button>
+        <el-button v-on:click="resetForm()" style="width:45%;">重 置</el-button>
     </el-form-item>
 </el-form>
 
@@ -64,7 +61,7 @@
             Email: '',
             Age: '',
             Sex: '1',
-            birthday: '',
+            Birthday: '',
             desc: ''
         };
     }
@@ -86,12 +83,7 @@
                 ],
                 Nickname: [{ required: true, message: "请输入昵称" }],
                 Phone: [{ required: true, message: "请输入电话" }],
-                Age: [
-                    { required: true, message: "请输入年龄" },
-                    { type: "number", message: "年龄必须是整数" }
-                ],
-                Sex: [{ required: true, message: "请选择性别" }],
-                birthday: [{ type: "date", required: true, message: "请选择生日" }]
+                Sex: [{ required: true, message: "请选择性别" }]
             },
         },
         methods: {
@@ -100,9 +92,8 @@
                 _this.$refs['ruleForm'].validate((valid) => {
                     if (valid) {
                         $.post("/Home/SaveRegister", JSON.stringify(form1.ruleForm), function (result) {
-                            
-                            if (result.State == "SUCCESS")
-                            {
+
+                            if (result.State == "SUCCESS") {
                                 _this.$message({
                                     message: result.Message,
                                     type: 'success'

@@ -7,6 +7,7 @@ using System.Threading;
 using Taki.Model;
 using Taki.DAL;
 using System;
+using Taki.Model.DTO;
 
 namespace Taki.Web.Controllers.Home
 {
@@ -21,6 +22,11 @@ namespace Taki.Web.Controllers.Home
         }
 
         public ActionResult Register()
+        {
+            return View();
+        }
+
+        public ActionResult NoPermission()
         {
             return View();
         }
@@ -47,6 +53,16 @@ namespace Taki.Web.Controllers.Home
                 if (result.State == EmOperationState.SUCCESS)
                 {
                     Session[GlobalParams.UserCookieKey] = result.Data;
+                    Session[GlobalParams.PurviewsOfUserCookieKey] = new PurviewDAL().GetPurviewsOfUser(result.Data);
+                    var allMenu = new PurviewDAL().GetAllMenu();
+                    var menuDTOs = new List<MenuDTO>();
+                    foreach (var item in allMenu.WhenNullThenDefault().Where(x => x.PPurviewID.IsNullOrWhiteSpace()))
+                    {
+                        menuDTOs.Add(new MenuDTO() { MenuItem = item, SubItems = allMenu.Where(x => item.PurviewID.Equals(x.PPurviewID)).WhenNullThenDefault().ToList() });
+                    }
+                    Session[GlobalParams.PurviewsOfMenuCookieKey] = menuDTOs;
+                    //Session[GlobalParams.PurviewsOfAllCookieKey] = new PurviewDAL().GetAllPurview();
+
                     if (saveCookie.To<bool>(false, true))
                     {
                         DataCache.SetCache(GlobalParams.UserCookieKey, result.Data);

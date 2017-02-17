@@ -12,11 +12,10 @@ namespace Taki.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class rolemenu
+    public partial class rolepurview
     {
-        public string RoleMenuID { get; set; }
+        public string RolePurviewID { get; set; }
         public string RoleID { get; set; }
-        public string MenuID { get; set; }
-        public string Remark { get; set; }
+        public string PurviewID { get; set; }
     }
 }

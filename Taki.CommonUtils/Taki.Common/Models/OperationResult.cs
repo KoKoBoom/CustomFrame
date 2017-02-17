@@ -39,6 +39,9 @@ namespace Taki.Common
                     case EmOperationState.SUCCESS:
                         this.Message = "操作成功";
                         break;
+                    case EmOperationState.NoPermission:
+                        this.Message = "没有权限";
+                        break;
                     default:
                         this.Message = "操作失败";
                         break;
@@ -69,6 +72,10 @@ namespace Taki.Common
         /// <summary>
         /// 操作成功
         /// </summary>
-        SUCCESS
+        SUCCESS,
+        /// <summary>
+        /// 没有权限
+        /// </summary>
+        NoPermission
     }
 }

@@ -1,7 +1,7 @@
 ﻿/********************************************************************************
 ** Auth：	Taki
 ** Mail:	mister_zheng@sina.com
-** Date：	2017/2/14 0:55:12
+** Date：	2017/2/18 2:10:24
 ** Desc：	
 *********************************************************************************/
 using System;
@@ -10,10 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Taki.DAL
+namespace Taki.Model.DTO
 {
-    public class GlobalParams
+    public class MenuDTO 
     {
-        public const string UserCookieKey = "UserSession";
+        public purview MenuItem { get; set; }
+        public List<purview> SubItems { get; set; }
     }
 }

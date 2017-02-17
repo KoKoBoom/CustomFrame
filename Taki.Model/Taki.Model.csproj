@@ -48,14 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\GlobalParams.cs" />
+    <Compile Include="DTO\MenuDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="purview.cs">
+      <DependentUpon>TakiDatabase.tt</DependentUpon>
+    </Compile>
     <Compile Include="role.cs">
       <DependentUpon>TakiDatabase.tt</DependentUpon>
     </Compile>
-    <Compile Include="rolemenu.cs">
-      <DependentUpon>TakiDatabase.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysmenu.cs">
+    <Compile Include="rolepurview.cs">
       <DependentUpon>TakiDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="TakiDatabase.Context.cs">
