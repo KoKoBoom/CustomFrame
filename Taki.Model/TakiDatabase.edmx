@@ -14,8 +14,9 @@
           <Property Name="PurviewUrl" Type="varchar" MaxLength="255" />
           <Property Name="PurviewIcon" Type="varchar" MaxLength="255" />
           <Property Name="PPurviewID" Type="varchar" MaxLength="50" />
-          <Property Name="SequenceNO" Type="varchar" MaxLength="50" />
+          <Property Name="SequenceNO" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PurviewType" Type="varchar" MaxLength="50" />
+          <Property Name="IsEnable" Type="bool" Nullable="false" />
         </EntityType>
         <EntityType Name="role">
           <Key>
@@ -89,22 +90,10 @@
         <EntityContainer Name="takiEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="role" EntityType="Self.role" />
           <EntitySet Name="userrole" EntityType="Self.userrole" />
-          <EntitySet Name="purview" EntityType="takiModel.purview" />
           <EntitySet Name="rolepurview" EntityType="takiModel.rolepurview" />
           <EntitySet Name="user" EntityType="takiModel.user" />
+          <EntitySet Name="purview" EntityType="takiModel.purview" />
         </EntityContainer>
-        <EntityType Name="purview">
-          <Key>
-            <PropertyRef Name="PurviewID" />
-          </Key>
-          <Property Name="PurviewID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PurviewName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PurviewUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="PurviewIcon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="PPurviewID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SequenceNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PurviewType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="rolepurview">
           <Key>
             <PropertyRef Name="RolePurviewID" />
@@ -128,6 +117,19 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="IsAdministrator" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="purview">
+          <Key>
+            <PropertyRef Name="PurviewID" />
+          </Key>
+          <Property Name="PurviewID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PurviewName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PurviewUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PurviewIcon" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PPurviewID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SequenceNO" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurviewType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsEnable" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -154,19 +156,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="purview">
-            <EntityTypeMapping TypeName="takiModel.purview">
-              <MappingFragment StoreEntitySet="purview">
-                <ScalarProperty Name="PurviewType" ColumnName="PurviewType" />
-                <ScalarProperty Name="SequenceNO" ColumnName="SequenceNO" />
-                <ScalarProperty Name="PPurviewID" ColumnName="PPurviewID" />
-                <ScalarProperty Name="PurviewIcon" ColumnName="PurviewIcon" />
-                <ScalarProperty Name="PurviewUrl" ColumnName="PurviewUrl" />
-                <ScalarProperty Name="PurviewName" ColumnName="PurviewName" />
-                <ScalarProperty Name="PurviewID" ColumnName="PurviewID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="rolepurview">
             <EntityTypeMapping TypeName="takiModel.rolepurview">
               <MappingFragment StoreEntitySet="rolepurview">
@@ -190,6 +179,20 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="purview">
+            <EntityTypeMapping TypeName="takiModel.purview">
+              <MappingFragment StoreEntitySet="purview">
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
+                <ScalarProperty Name="PurviewType" ColumnName="PurviewType" />
+                <ScalarProperty Name="SequenceNO" ColumnName="SequenceNO" />
+                <ScalarProperty Name="PPurviewID" ColumnName="PPurviewID" />
+                <ScalarProperty Name="PurviewIcon" ColumnName="PurviewIcon" />
+                <ScalarProperty Name="PurviewUrl" ColumnName="PurviewUrl" />
+                <ScalarProperty Name="PurviewName" ColumnName="PurviewName" />
+                <ScalarProperty Name="PurviewID" ColumnName="PurviewID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

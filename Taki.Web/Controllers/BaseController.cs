@@ -24,7 +24,7 @@ namespace Taki.Web.Controllers
                 Response.Redirect("/Home/Login");
             }
 
-            if (purviewsOfUser.WhenNullThenDefault().Any() && purviewsOfUser.Where(x => url.ToLower().Equals(x.PurviewUrl?.ToLower()?.TrimEnd('/'))).WhenNullThenDefault().Any())
+            if (GetAppAuthorizationAttributeValue(filterContext) == EmAppAuthorization.Allow || (purviewsOfUser.Any() && purviewsOfUser.Where(x => url.ToLower().Equals(x.PurviewUrl?.ToLower()?.TrimEnd('/'))).Any()))
             {
                 base.OnActionExecuting(filterContext);
             }
@@ -43,6 +43,21 @@ namespace Taki.Web.Controllers
                 }
             }
             //LoggerFactory.Create()?.Info("OnActionExecuting", filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName + "." + filterContext.ActionDescriptor.ActionName);
+        }
+
+        /// <summary>
+        /// 获取 特性值
+        /// </summary>
+        /// <param name="filterContext"></param>
+        /// <returns></returns>
+        private static EmAppAuthorization GetAppAuthorizationAttributeValue(ActionExecutingContext filterContext)
+        {
+            var attribute = filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.GetMethod(filterContext.ActionDescriptor.ActionName).GetCustomAttributes(typeof(AppAuthorizationAttribute), false).FirstOrDefault();
+            if (attribute == null)
+            {
+                return EmAppAuthorization.Allow;
+            }
+            return ((AppAuthorizationAttribute)attribute).Value;
         }
 
         //protected override void OnActionExecuted(ActionExecutedContext filterContext)

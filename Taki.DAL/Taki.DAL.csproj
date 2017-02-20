@@ -55,6 +55,10 @@
       <Project>{caa687b6-b794-4efe-9259-c2f90c9ca057}</Project>
       <Name>Taki.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Taki.CommonUtils\Taki.Logging\Taki.Logging.csproj">
+      <Project>{876861ea-a401-463c-859d-41085b582e21}</Project>
+      <Name>Taki.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Taki.Model\Taki.Model.csproj">
       <Project>{473304E2-6A68-4942-B4A6-DFCB477C7E78}</Project>
       <Name>Taki.Model</Name>

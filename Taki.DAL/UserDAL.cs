@@ -77,9 +77,10 @@ namespace Taki.DAL
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 result.State = EmOperationState.ERROR;
+                Taki.Logging.LoggerFactory.Create().Error(ex);
             }
 
             return result;

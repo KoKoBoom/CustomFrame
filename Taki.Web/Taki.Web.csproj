@@ -186,6 +186,7 @@
     <Compile Include="Controllers\Home\TestExceptionController.cs" />
     <Compile Include="Controllers\Manage\MenuController.cs" />
     <Compile Include="Filters\AjaxExceptionAttribute.cs" />
+    <Compile Include="Filters\AppAuthorizationAttribute.cs" />
     <Compile Include="Filters\ExceptionHanlder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -209,8 +210,9 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Shared\_LayoutRuleless.cshtml" />
-    <Content Include="Views\Home\NoPermission.cshtml" />
+    <Content Include="Views\Shared\NoPermission.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\MenuManage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

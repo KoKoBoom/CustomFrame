@@ -19,7 +19,8 @@ namespace Taki.Model
         public string PurviewUrl { get; set; }
         public string PurviewIcon { get; set; }
         public string PPurviewID { get; set; }
-        public string SequenceNO { get; set; }
+        public long SequenceNO { get; set; }
         public string PurviewType { get; set; }
+        public bool IsEnable { get; set; }
     }
 }

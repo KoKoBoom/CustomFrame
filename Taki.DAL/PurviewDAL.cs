@@ -15,6 +15,10 @@ namespace Taki.DAL
 {
     public class PurviewDAL
     {
+        /// <summary>
+        /// 获取所有菜单
+        /// </summary>
+        /// <returns></returns>
         public IList<purview> GetAllMenu()
         {
             using (takiEntities _db = new takiEntities())
@@ -23,13 +27,18 @@ namespace Taki.DAL
             }
         }
 
+        /// <summary>
+        /// 获取用户对应的权限
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public IList<purview> GetPurviewsOfUser(user model)
         {
             using (takiEntities _db = new takiEntities())
             {
                 if (model.IsAdministrator)
                 {
-                    return _db.purview.ToList();
+                    return _db.purview.Where(x => x.IsEnable).ToList();
                 }
                 else
                 {
@@ -37,12 +46,16 @@ namespace Taki.DAL
                             join b in _db.role on a.RoleID equals b.RoleID
                             join c in _db.rolepurview on b.RoleID equals c.RoleID
                             join d in _db.purview on c.PurviewID equals d.PurviewID
-                            where a.UserID == model.UserID
+                            where a.UserID == model.UserID && d.IsEnable
                             select d).ToList();
                 }
             }
         }
 
+        /// <summary>
+        /// 获取所有权限列表
+        /// </summary>
+        /// <returns></returns>
         public IList<purview> GetAllPurview()
         {
             using (takiEntities _db = new takiEntities())

@@ -27,8 +27,8 @@ namespace Taki.Model
     
         public DbSet<role> role { get; set; }
         public DbSet<userrole> userrole { get; set; }
-        public DbSet<purview> purview { get; set; }
         public DbSet<rolepurview> rolepurview { get; set; }
         public DbSet<user> user { get; set; }
+        public DbSet<purview> purview { get; set; }
     }
 }

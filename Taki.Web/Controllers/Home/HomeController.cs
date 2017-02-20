@@ -28,7 +28,7 @@ namespace Taki.Web.Controllers.Home
 
         public ActionResult NoPermission()
         {
-            return View();
+            return View(@"~\Views\Shared\NoPermission.cshtml");
         }
 
         public ActionResult Login()
@@ -53,22 +53,22 @@ namespace Taki.Web.Controllers.Home
                 if (result.State == EmOperationState.SUCCESS)
                 {
                     Session[GlobalParams.UserCookieKey] = result.Data;
-                    Session[GlobalParams.PurviewsOfUserCookieKey] = new PurviewDAL().GetPurviewsOfUser(result.Data);
-                    var allMenu = new PurviewDAL().GetAllMenu();
+                    var purviewOfUser = new PurviewDAL().GetPurviewsOfUser(result.Data);
+                    Session[GlobalParams.PurviewsOfUserCookieKey] = purviewOfUser;
+
                     var menuDTOs = new List<MenuDTO>();
-                    foreach (var item in allMenu.WhenNullThenDefault().Where(x => x.PPurviewID.IsNullOrWhiteSpace()))
+                    foreach (var item in purviewOfUser.Where(x => "menu".Equals(x.PurviewType) && x.PPurviewID.IsNullOrEmpty()))
                     {
-                        menuDTOs.Add(new MenuDTO() { MenuItem = item, SubItems = allMenu.Where(x => item.PurviewID.Equals(x.PPurviewID)).WhenNullThenDefault().ToList() });
+                        menuDTOs.Add(new MenuDTO() { MenuItem = item, SubItems = purviewOfUser.Where(x => item.PurviewID.Equals(x.PPurviewID)).ToList() });
                     }
                     Session[GlobalParams.PurviewsOfMenuCookieKey] = menuDTOs;
-                    //Session[GlobalParams.PurviewsOfAllCookieKey] = new PurviewDAL().GetAllPurview();
+                    Session[GlobalParams.PurviewsOfAllCookieKey] = new PurviewDAL().GetAllPurview();
 
                     if (saveCookie.To<bool>(false, true))
                     {
                         DataCache.SetCache(GlobalParams.UserCookieKey, result.Data);
                     }
                 }
-
             }
             catch (System.Exception ex)
             {

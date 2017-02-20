@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "菜单管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@section Styles{
+    <style>
+        .el-table .info-row {
+            background: #8492A6;
+        }
+
+        .el-table .positive-row {
+            background: #e2f0e4;
+        }
+    </style>
+}
+
+
+<div id="el-table" style="position:absolute; left:200px; padding:10px;">
+    <template>
+        <el-table v-bind:data="tableData" border v-bind:row-class-name="tableRowClassName">
+            <el-table-column prop="PurviewName" label="菜单名称" width="280" v-bind:formatter="formatter"></el-table-column>
+            <el-table-column prop="PurviewUrl" label="菜单链接" width="280"></el-table-column>
+            <el-table-column prop="IsEnable" label="可用" width="280" v-bind:formatter="function(row, column){return row.IsEnable?'可用':'禁用';}"></el-table-column>
+            <el-table-column label="操作" width="280">
+                <template scope="scope">
+                    <el-button size="small" v-on:click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="small" type="danger" v-on:click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+</div>
+
+@section Scripts{
+
+    <script>
+
+        var vm = new Vue({
+            el: "#el-table",
+            data: { tableData: [] },
+            methods: {
+                tableRowClassName(row, index) {
+                    if (!row.IsEnable) {
+                        return 'info-row';
+                    }
+                    return '';
+                },
+                handleEdit(index, row) {
+                    console.log(index, row);
+                },
+                handleDelete(index, row) {
+                    console.log(index, row);
+                },
+                formatter(row, column) {
+                    if (row.PPurviewID) {
+                        return '　　' + row.PurviewName;
+                    }
+                    return row.PurviewName;
+                }
+            }
+        });
+
+        $(function () {
+
+            $.get("/Manage/GetAllMenu", function (result) {
+                if (result.State == "SUCCESS") {
+                    for (i = 0, len = result.Data.length; i < len; i++) {
+                        vm.tableData.push(result.Data[i]);
+                    }
+                } else {
+                    vm.$message({
+                        message: result.Message,
+                        type: 'warning'
+                    })
+                }
+            });
+
+        });
+
+    </script>
+}
