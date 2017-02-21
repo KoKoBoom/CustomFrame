@@ -21,6 +21,6 @@ namespace Taki.Model
         public string PPurviewID { get; set; }
         public long SequenceNO { get; set; }
         public string PurviewType { get; set; }
-        public bool IsEnable { get; set; }
+        public int Status { get; set; }
     }
 }

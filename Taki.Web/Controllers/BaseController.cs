@@ -24,7 +24,7 @@ namespace Taki.Web.Controllers
                 Response.Redirect("/Home/Login");
             }
 
-            if (GetAppAuthorizationAttributeValue(filterContext) == EmAppAuthorization.Allow || (purviewsOfUser.Any() && purviewsOfUser.Where(x => url.ToLower().Equals(x.PurviewUrl?.ToLower()?.TrimEnd('/'))).Any()))
+            if (GetAppAuthorizationAttributeValue(filterContext) == EmAppAuthorization.Allow || (purviewsOfUser.Any() && purviewsOfUser.Where(x => url.ToLower().TrimEnd('/').Equals(x.PurviewUrl?.ToLower()?.TrimEnd('/'))).Any()))
             {
                 base.OnActionExecuting(filterContext);
             }
@@ -41,6 +41,9 @@ namespace Taki.Web.Controllers
                 {
                     Response.Redirect("/Home/NoPermission");
                 }
+                Response.End();
+                Response.Close();
+                Response.Redirect("/Home/NoPermission");
             }
             //LoggerFactory.Create()?.Info("OnActionExecuting", filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName + "." + filterContext.ActionDescriptor.ActionName);
         }
@@ -55,7 +58,7 @@ namespace Taki.Web.Controllers
             var attribute = filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.GetMethod(filterContext.ActionDescriptor.ActionName).GetCustomAttributes(typeof(AppAuthorizationAttribute), false).FirstOrDefault();
             if (attribute == null)
             {
-                return EmAppAuthorization.Allow;
+                return EmAppAuthorization.NoAllow;
             }
             return ((AppAuthorizationAttribute)attribute).Value;
         }

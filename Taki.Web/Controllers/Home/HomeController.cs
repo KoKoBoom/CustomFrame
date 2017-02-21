@@ -33,12 +33,6 @@ namespace Taki.Web.Controllers.Home
 
         public ActionResult Login()
         {
-            //var userModel = Session[GlobalParams.UserCookieKey] as user;
-
-            //if (userModel != null && userModel.Name.IsNotNullAndWhiteSpace())
-            //{
-            //    return View("/Manage/Index");
-            //}
             return View();
         }
 

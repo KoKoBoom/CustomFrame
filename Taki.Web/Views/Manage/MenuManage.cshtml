@@ -7,11 +7,30 @@
 @section Styles{
     <style>
         .el-table .info-row {
-            background: #8492A6;
+            background: #c3cbd6;
         }
 
         .el-table .positive-row {
             background: #e2f0e4;
+        }
+
+        i {
+            font-size: 20px;
+            margin-left:10px;
+        }
+
+        .el-icon-edit:hover {
+            color: #13CE66;
+            cursor: pointer;
+        }
+        .el-icon-setting:hover {
+            color: #13CE66;
+            cursor: pointer;
+
+        }
+        .el-icon-delete:hover {
+            color: red;
+            cursor: pointer;
         }
     </style>
 }
@@ -22,15 +41,55 @@
         <el-table v-bind:data="tableData" border v-bind:row-class-name="tableRowClassName">
             <el-table-column prop="PurviewName" label="菜单名称" width="280" v-bind:formatter="formatter"></el-table-column>
             <el-table-column prop="PurviewUrl" label="菜单链接" width="280"></el-table-column>
-            <el-table-column prop="IsEnable" label="可用" width="280" v-bind:formatter="function(row, column){return row.IsEnable?'可用':'禁用';}"></el-table-column>
+            <el-table-column prop="Status" label="状态" width="280" v-bind:formatter="formatterStatus"></el-table-column>
+            @*<el-table-column label="可用" width="280">
+                    <template scope="scope">
+                        <el-switch v-model="scope.Status" v-on:change="changeStatus(scope)" on-color="@Html.Raw("#13ce66")" off-color="@Html.Raw("#ff4949")"></el-switch>
+                    </template>
+                </el-table-column>*@
             <el-table-column label="操作" width="280">
                 <template scope="scope">
-                    <el-button size="small" v-on:click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="small" type="danger" v-on:click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    <i class="el-icon-edit" v-on:click="handleEdit(scope.$index, scope.row)" title="编辑"></i>
+                    <i class="el-icon-setting" v-on:click="handleUpdateStatus(scope.$index, scope.row)" title="启用/禁用"></i>
+                    <i class="el-icon-delete" type="danger" v-on:click="handleDelete(scope.$index, scope.row)" title="删除"></i>
+                    @*<el-button size="small">编辑</el-button>
+                        <el-button size="small" v-on:click="handleUpdateStatus(scope.$index, scope.row)"></el-button>
+                        <el-button size="small">删除</el-button>*@
                 </template>
             </el-table-column>
         </el-table>
     </template>
+
+    <el-dialog title="菜单修改" v-model="dialogFormVisible" size="tiny">
+        <el-form v-bind:model="formMenu" label-width="80px">
+            <el-form-item label="菜单名称">
+                <el-input v-model="formMenu.PurviewName" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="菜单链接">
+                <el-input v-model="formMenu.PurviewUrl" auto-complete="on"></el-input>
+            </el-form-item>
+            <el-form-item label="菜单图标">
+                <el-input v-model="formMenu.PurviewIcon" auto-complete="on"></el-input>
+            </el-form-item>
+            <el-form-item label="菜单上级">
+                <el-select v-model="formMenu.PPurviewID" placeholder="菜单上级">
+                    <el-option label="--无--"></el-option>
+                    <el-option v-for="item in tableData" v-bind:label="item.PurviewName" v-bind:value="item.PurviewID"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="状态">
+                <el-select v-model="formMenu.Status" placeholder="请选择状态">
+                    <el-option label="启用" value="1"></el-option>
+                    <el-option label="禁用" value="2"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @@click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @@click="handleUpdate">确 定</el-button>
+        </div>
+    </el-dialog>
+
 </div>
 
 @section Scripts{
@@ -39,44 +98,112 @@
 
         var vm = new Vue({
             el: "#el-table",
-            data: { tableData: [] },
+            data: {
+                tableData: [],
+                formMenu: {
+                    PurviewID: "",
+                    PurviewName: "",
+                    PurviewUrl: "",
+                    PurviewIcon: "",
+                    PPurviewID: "",
+                    PurviewType: "",
+                    Status: "1",
+                },
+                dialogFormVisible: false,
+                dialogTableVisible: false
+                //formLabelWidth: "120px"
+            },
             methods: {
                 tableRowClassName(row, index) {
-                    if (!row.IsEnable) {
+                    if (row.Status == 2) {
                         return 'info-row';
                     }
                     return '';
                 },
+                handleUpdateStatus(index, row) {
+                    var _this = this;
+                    $.post("/Manage/UpdatePurviewStatus", JSON.stringify({ id: row.PurviewID, status: row.Status == 1 ? 2 : 1 }), function (result) {
+                        if (result.State == "SUCCESS") {
+                            _this.initTable();
+                            _this.$message.success(result.Message);
+                        }
+                        else {
+                            _this.$message.error(result.Message);
+                        }
+                    });
+                },
                 handleEdit(index, row) {
-                    console.log(index, row);
+                    this.formMenu.PurviewID = row.PurviewID;
+                    this.formMenu.PurviewName = row.PurviewName;
+                    this.formMenu.PurviewUrl = row.PurviewUrl;
+                    this.formMenu.PurviewIcon = row.PurviewIcon;
+                    this.formMenu.PPurviewID = row.PPurviewID;
+                    this.formMenu.PurviewType = row.PurviewType;
+                    this.formMenu.SequenceNO = row.SequenceNO;
+                    this.formMenu.Status = row.Status.toString();
+                    this.dialogFormVisible = true;
+                },
+                handleUpdate() {
+                    var _this = this;
+                    $.post("/Manage/UpdateMenu", JSON.stringify(_this.formMenu), function (result) {
+                        if (result.State == "SUCCESS") {
+                            _this.initTable();
+                            _this.$message.success(result.Message);
+                            _this.dialogFormVisible = false;
+                        }
+                        else {
+                            _this.$message.error(result.Message);
+                        }
+                    });
                 },
                 handleDelete(index, row) {
-                    console.log(index, row);
+                    var _this = this;
+                    _this.$confirm("确认删除菜单？", "提示", { confirmButtonText: "确定", cancelButtonText: "取消", type: "warning" })
+                        .then(() => {
+                            $.post("/Manage/DeleteMenu", JSON.stringify({ id: row.PurviewID }), function (result) {
+                                if (result.State == "SUCCESS") {
+                                    _this.initTable();
+                                    _this.$message.success(result.Message);
+                                }
+                                else {
+                                    _this.$message.error(result.Message);
+                                }
+                            });
+                        });
                 },
                 formatter(row, column) {
                     if (row.PPurviewID) {
                         return '　　' + row.PurviewName;
                     }
                     return row.PurviewName;
+                },
+                formatterStatus(row, column) {
+                    if (row.Status == 1) {
+                        return "可用";
+                    } else {
+                        return "禁用";
+                    }
+                },
+                initTable() {
+                    $.get("/Manage/GetAllMenu", function (result) {
+                        if (result.State == "SUCCESS") {
+                            vm.tableData = [];
+                            for (i = 0, len = result.Data.length; i < len; i++) {
+                                vm.tableData.push(result.Data[i]);
+                            }
+                        } else {
+                            vm.$message({
+                                message: result.Message,
+                                type: 'warning'
+                            })
+                        }
+                    });
                 }
             }
         });
 
         $(function () {
-
-            $.get("/Manage/GetAllMenu", function (result) {
-                if (result.State == "SUCCESS") {
-                    for (i = 0, len = result.Data.length; i < len; i++) {
-                        vm.tableData.push(result.Data[i]);
-                    }
-                } else {
-                    vm.$message({
-                        message: result.Message,
-                        type: 'warning'
-                    })
-                }
-            });
-
+            vm.initTable();
         });
 
     </script>
