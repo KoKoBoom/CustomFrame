@@ -26,6 +26,11 @@ namespace Taki.Web.Controllers.Manage
             return View();
         }
 
+        public ActionResult UserManage()
+        {
+            return View();
+        }
+
         [AppAuthorization(EmAppAuthorization.Allow)]
         public ActionResult GetAllMenu()
         {

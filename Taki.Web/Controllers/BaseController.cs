@@ -32,18 +32,12 @@ namespace Taki.Web.Controllers
             {
                 if (filterContext.HttpContext.Request.IsAjaxRequest())
                 {
-                    Response.Write(new OperationResult<string>()
-                    {
-                        State = EmOperationState.NoPermission
-                    }.ToJson());
+                    filterContext.Result = new RedirectResult("/Home/NoPermissionAjax/");
                 }
                 else
                 {
-                    Response.Redirect("/Home/NoPermission");
+                    filterContext.Result = new RedirectResult("/Home/NoPermission/");
                 }
-                Response.End();
-                Response.Close();
-                Response.Redirect("/Home/NoPermission");
             }
             //LoggerFactory.Create()?.Info("OnActionExecuting", filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName + "." + filterContext.ActionDescriptor.ActionName);
         }

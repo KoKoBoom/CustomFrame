@@ -31,6 +31,14 @@ namespace Taki.Web.Controllers.Home
             return View(@"~\Views\Shared\NoPermission.cshtml");
         }
 
+        public ActionResult NoPermissionAjax()
+        {
+            return Json(new OperationResult<string>()
+            {
+                State = EmOperationState.NoPermission
+            });
+        }
+
         public ActionResult Login()
         {
             return View();

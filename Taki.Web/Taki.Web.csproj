@@ -213,6 +213,7 @@
     <Content Include="Views\Shared\NoPermission.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\MenuManage.cshtml" />
+    <Content Include="Views\Manage\UserManage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
